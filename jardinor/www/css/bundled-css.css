@@ -1,0 +1,31 @@
+
+.shiny-htable td.prune{
+  background: #c4dcf3;
+  color:blue;
+  text-shadow: 3px 3px 6px #111417; 
+}
+
+.shiny-htable td.poire{
+  background-color: blue;
+  color: white;
+   text-shadow: 3px 3px 6px #301e00; 
+}
+
+.shiny-htable td.peche{
+  background-color: green;
+ color:white;
+  text-shadow: 3px 3px 6px #170706; 
+}
+
+.shiny-htable td.pomme{
+  background-color: red;  
+  color:white;
+  text-shadow: 3px 3px 6px #170706; 
+}
+
+
+.shiny-htable td.gros{
+  background-color: yellow;  
+  color:blue;
+
+}
