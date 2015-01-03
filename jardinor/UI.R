@@ -363,8 +363,8 @@ shinyUI(navbarPage(
          dateInput(inputId="rec1",label="Recolte",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
          dateInput(inputId="finrec1",label="Fin rec.",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
          h5("Commentaires:"),
-         tags$textarea(id="com1", rows=2, cols=24, "Com1"),
-         tags$img(src="aqualeg1.jpg", width="150px",height="20px")),
+         tags$textarea(id="com1", rows=2, cols=24, "Com1")),
+       #  tags$img(src="aqualeg1.jpg", width="150px",height="20px")),
          
          
   wellPanel(
@@ -379,8 +379,8 @@ shinyUI(navbarPage(
   dateInput(inputId="rec2",label="Recolte",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
   dateInput(inputId="finrec2",label="Fin rec.",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
   h5("Commentaires:"),
-  HTML('<textarea id="com2" rows="2" cols="20">ajouter commentaire</textarea>'),
-  tags$img(src="alegume1.jpg", id="test", width="300px",height="20px")),
+  HTML('<textarea id="com2" rows="2" cols="20">ajouter commentaire</textarea>')),
+  #tags$img(src="alegume1.jpg", id="test", width="300px",height="20px")),
   
  
   br(),
