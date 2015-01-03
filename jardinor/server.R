@@ -3,7 +3,7 @@
 library("shiny")
 # setwd("~/gardenR/")
 
-# runApp("gardenR")
+# runApp("jardinor")
 
 library("shinyBS")
 #library("chron")
