@@ -248,9 +248,9 @@ shinyUI(navbarPage(
                                          
                                          
                                          
-                                         column(8                     
+                                         column(8,                    
                                                 
-                                               # uiOutput("plotjar3")
+                                                uiOutput("plotjar3")
                                          ),
                                          column(2,
                                                 
@@ -282,8 +282,8 @@ shinyUI(navbarPage(
                                                   tags$input(type = "button",id = "adarb3" ,value="Ajouter cette plante"),
                                                   br(),br(),
                                                   tags$input(type = "button",id = "suparb3" ,value="Supprimer une plante")
-                                                )))
-                                       #uiOutput("tabjar3")                                 
+                                                ))),
+                                       uiOutput("tabjar3")                                 
                                        ),
                               
                               tabPanel(h4("Plantes perennes"),
@@ -359,9 +359,9 @@ shinyUI(navbarPage(
                             ,selected=read.csv("data/param.csv",stringsAsFactors =FALSE)$list[1]),
          
          dateInput(inputId="sem1",label="Semis",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
-         dateInput(inputId="plant1",label="Plant.",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
+         dateInput(inputId="plant1",label="Plantation",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
          dateInput(inputId="rec1",label="Recolte",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
-         dateInput(inputId="finrec1",label="Fin rec.",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
+         dateInput(inputId="finrec1",label="Fin recolte",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
          h5("Commentaires:"),
          tags$textarea(id="com1", rows=2, cols=24, "Com1")),
        #  tags$img(src="aqualeg1.jpg", width="150px",height="20px")),
@@ -375,9 +375,9 @@ shinyUI(navbarPage(
   
   #h5(verbatimTextOutput("lonleg2")),          
   dateInput(inputId="sem2",label="Semis",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
-  dateInput(inputId="plant2",label="Plant.",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
+  dateInput(inputId="plant2",label="Plantation",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
   dateInput(inputId="rec2",label="Recolte",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
-  dateInput(inputId="finrec2",label="Fin rec.",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
+  dateInput(inputId="finrec2",label="Fin recolte",format="yyyy-mm-dd",language="fr",value="2015-03-01"),
   h5("Commentaires:"),
   HTML('<textarea id="com2" rows="2" cols="20">ajouter commentaire</textarea>')),
   #tags$img(src="alegume1.jpg", id="test", width="300px",height="20px")),

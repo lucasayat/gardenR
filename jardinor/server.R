@@ -338,17 +338,17 @@ observe({
           updateCheckboxGroupInput(session, "legum2",label = "",selected = data$legume2[[selin]])
           updateNumericInput(session,"rang2",label="",value=data$nbran2[selin])
           updateDateInput(session,"sem2",label="Semis",value=data$datesem2[selin])
-          updateDateInput(session,"plant2",label="Plant.",value=data$dateplant2[selin])
+          updateDateInput(session,"plant2",label="Plantation",value=data$dateplant2[selin])
           updateDateInput(session,"rec2",label="Recolte",value=data$daterec2[selin])
-          updateDateInput(session,"finrec2",label="Fin rec",value=data$finrec2[selin])
+          updateDateInput(session,"finrec2",label="Fin recolte",value=data$finrec2[selin])
           updateTextInput(session, "com2", label = "Commentaires:", value = data$comment2[selin])
         }else{
           updateTextInput(session,"legum2",label="",value="aucun") 
           updateNumericInput(session,"rang2",label="",value=0)
           updateDateInput(session,"sem2",label="Semis", value="2015-03-01")
-          updateDateInput(session,"plant2",label="Plant.",value="2015-03-01")
+          updateDateInput(session,"plant2",label="Plantation",value="2015-03-01")
           updateDateInput(session,"rec2",label="Recolte",value="2015-06-01")
-          updateDateInput(session,"finrec2",label="Fin rec.",value="2015-06-01")
+          updateDateInput(session,"finrec2",label="Fin recolte",value="2015-06-01")
           updateTextInput(session, "com2",label = "Commentaires:",value = "comment") 
         }
         }}}else{
@@ -356,16 +356,16 @@ observe({
           updateCheckboxGroupInput(session, "legum1",label = "",selected=param$list[1])
           updateNumericInput(session,"rang1",label="", value= 0)
           updateDateInput(session,"sem1",label="Semis", value=as.Date("2015-03-01"))
-          updateDateInput(session,"plant1",label="Plant.",value=as.Date("2015-03-01"))
+          updateDateInput(session,"plant1",label="Plantation",value=as.Date("2015-03-01"))
           updateDateInput(session,"rec1",label="Recolte",value=as.Date("2015-06-01"))
-          updateDateInput(session,"finrec1",label="Fin rec",value=as.Date("2015-06-01"))
+          updateDateInput(session,"finrec1",label="Fin recolte",value=as.Date("2015-06-01"))
           updateTextInput(session, "com1",label = "Commentaires:",value = "comment") 
           updateTextInput(session,"legum2",label="",value="aucun") 
           updateNumericInput(session,"rang2",label="Nbre rangs:",value=0)
           updateDateInput(session,"sem2",label="Semis", value=as.Date("2015-03-01"))
-          updateDateInput(session,"plant2",label="Plant.",value=as.Date("2015-03-01"))
+          updateDateInput(session,"plant2",label="Plantation",value=as.Date("2015-03-01"))
           updateDateInput(session,"rec2",label="Recolte",value=as.Date("2015-10-01"))
-          updateDateInput(session,"finrec2",label="Fin rec.",value=as.Date("2015-10-01"))
+          updateDateInput(session,"finrec2",label="Fin recolte",value=as.Date("2015-10-01"))
           updateTextInput(session, "com2",label = "Commentaires:",value = "comment")                
         }
     }}
@@ -861,8 +861,206 @@ output$tabal2 <-  renderTable({
   return(al2)
 },digits=0,include.rownames = FALSE
 )
+###############jardin3 elements fixes
+output$jar3<-renderPlot({
+  
+  jardin(input$long3,input$larg3,"") 
+  #input$adtree3
+  hx3<-input$trix3
+  bx3<-input$trix3+1
+  hy3<-input$long3-input$triy3
+  by3<-input$long3-input$triy3-1
+  rect(bx3+0.3,by3-0.5,hx3,hy3,col="green",density=10)
+  points(hx3,hy3,pch=19,cex=2,col='red')
+  text(hx3+0.5,hy3-0.2,labels="arbre")
+  points(bx3,by3,pch=10,cex=6,col='red')
+  
+  alox3<-input$alox3
+  aloy3<-input$long3-input$aloy3
+  albax3<-input$albax3
+  albay3<-input$long3-input$albay3
+  segments(albax3,albay3,alox3,aloy3,col="red",lwd=5)
+  text((alox3+albax3)/2,(aloy3+albay3)/2,labels="allée",col="blue")
+  
+  verger<-subset(tabarb(),jar=="B")
+  if(length(verger$num>0))
+  {
+    rect(verger$l,input$long3-verger$t,verger$l+1,input$long3-verger$t-1,border="blue",col='green',density=30)
+    text(verger$l+0.5,input$long3-verger$t+0.3,labels=paste(verger$num,verger$nom),col="blue")
+    points(verger$l,input$long3-verger$t,pch=19,cex=1,col='blue')
+    points(verger$l+1,input$long3-verger$t-1,pch=10,cex=verger$taille*5,col='blue')
+  }
+  
+  al<-subset(tabal(),j=="B")
+  l<-length(al$num)
+  if(l>0)
+  {
+    for(i in 1:l)
+    {
+      segments(al$a,input$long3-al$b,al$c,input$long3-al$d,col="blue",lwd=5)
+      text(al$a,input$long3-al$b,labels=paste("Allée N°",al$num))
+    }
+  }
+  
+  h <-input$clic3 
+  if(!is.null(h)) {points(h$x,h$y,pch=19,col="purple",cex=4)} 
+  
+})
+
+output$plotjar3<-renderUI({
+  w3<-paste0(input$larg3*30,"px")
+  h3<-paste0(input$long3*30,"px")    
+  plotOutput("jar3",width=w3,height=h3,
+             hoverId=NULL,
+             hoverDelay=300,
+             clickId="clic3",
+             hoverDelayType="debounce")
+})
+
+output$tabjar3<-renderUI({
+  
+  div(fluidRow(
+    column(3),
+    column(3,
+           h3("Allées du 3ème jardin"),
+           tableOutput("tabal3")),
+    column(6,
+           h3("Arbres et plantes perennes du 1er jardin"), 
+           tableOutput("tabarb3"))))
+})
+
+output$jarpal3<-output$jartri3<-renderText({
+  h3 <-input$clic3 
+  if(is.null(h3)) return(NULL)  
+  p1<-paste("X =",round(h3$x,0),"m,  Y =",round(input$long3-h3$y,0),"m")
+  return(p1)
+})
+
+observe({
+  input$A3
+  h3 <-isolate(input$clic3)
+  if(is.null(h3)) return(NULL)  
+  updateNumericInput(session,"alox3",value=round(h3$x,0))
+  updateNumericInput(session,"aloy3",value=round(input$long3-h3$y,0))  
+})
+
+observe({
+  input$B3
+  h3 <-isolate(input$clic3)
+  if(is.null(h3)) return(NULL)  
+  updateNumericInput(session,"albax3",value=round(h3$x,0))
+  updateNumericInput(session,"albay3",value=round(input$long3-h3$y,0))  
+})
 
 
+observe ({
+  input$adallee3
+  
+  if(!is.null(input$adallee3))
+  {
+    if(input$adallee3 == "on")
+    {
+      
+      al3<-isolate(tabal())
+      num<-ifelse(length(al3$num)==0,1,max(al3$num)+1)
+      
+      ajout3<-data.frame(num=num,a=input$alox3,b=input$aloy3,c=input$albax3,
+                         d=input$albay3,j="B",col="green",stringsAsFactors = FALSE)                  
+      
+      q<-rbind(al3,ajout3)
+      
+      saveRDS(q,"data/datal")
+    }}  
+})
+
+observe({
+  input$supallee3
+  elim<-as.integer(input$supallee3)
+  
+  if(length(elim)>0)
+  {
+    if(elim >0)
+    {     
+      tab<-isolate(tabal()) 
+      tab$num<-as.integer(tab$num)
+      num<-as.integer(which(tab$num==elim))     
+      q<-tab[-num,]      
+      saveRDS(q,"data/datal")      
+    }} 
+})
+
+observe({
+  input$C3
+  h3 <-isolate(input$clic3)
+  if(is.null(h3)) return(NULL)  
+  updateNumericInput(session,"trix3",value=round(h3$x,0))
+  updateNumericInput(session,"triy3",value=round(input$long3-h3$y,0))  
+})
+
+observe ({
+  input$adtree3
+  
+  if(!is.null(input$adtree3))
+  {
+    if(input$adtree3 == "on")
+    {
+      #tree<-readRDS("data/trees")
+      tree<-isolate(tabarb())
+      num<-ifelse(length(tree$num)==0,1,max(tree$num)+1)
+      
+      ajout3<-data.frame(num=num,l=input$trix3,t=input$triy3,nom=input$var3,
+                         scr=as.integer(input$esp3),taille=as.integer(input$size3),jar="B",
+                         plantation=input$plantan3,recolte=input$div3,stringsAsFactors = FALSE)
+      
+      q<-rbind(tree,ajout3)
+      
+      saveRDS(q,"data/trees")
+      
+      #updateTextInput(session, "var3", value ="")  
+      #updateTextInput(session, "div3", value ="")     
+    }}  
+})
+
+
+observe({
+  input$suptree3
+  elim<-as.integer(input$suptree3)
+  
+  if(length(elim)>0)
+  {
+    if(elim >0)
+    {     
+      tab<-isolate(tabarb()) 
+      tab$num<-as.integer(tab$num)
+      num<-as.integer(which(tab$num==elim))     
+      q<-tab[-num,]      
+      saveRDS(q,"data/trees")      
+    }} 
+})
+
+
+
+output$tabarb3 <-  renderTable({
+  
+  arb3<-subset(tabarb(),jar=="B")
+  if(length(arb3$num)==0) (arb3<-as.data.frame(matrix("",1,9),stringAsFactors=FALSE))
+  arb3<-nomtri(arb3)
+  colnames(arb3)<-c("Num","large","long","variété","espèce","taille","jardin","année_plant.","Commentaires")   
+  return(arb3)
+},digits=0,include.rownames = FALSE
+)
+
+
+output$tabal3 <-  renderTable({
+  
+  al3<-subset(tabal(),j=="B")
+  if(length(al3$num)==0) (al3<-as.data.frame(matrix("",1,7)))
+  colnames(al3)<-c("Num","a","b","c","d","jardin","couleur")   
+  return(al3)
+},digits=0,include.rownames = FALSE
+)
+
+########### fin structure des jardins
 ######### nom des jardins
 output$nomjard1<-renderText({
   n1<-"Jardin du haut"

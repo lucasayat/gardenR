@@ -265,12 +265,15 @@ text-align:center;
    color:blue;
    } 
    
+.datepicker{
+  width:70%;
   
+}  
    
  #sem1,#sem2,#plant1,#plant2,#rec1,#rec2,#finrec1,#finrec2 
  { 
    font-size:12px; 
-   width:95%;
+   width:45%;
    height:30px;
    color:blue;
    display:inline-block; 

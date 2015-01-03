@@ -115,6 +115,62 @@ document.getElementById("supal2").onclick = function()
         Shiny.onInputChange("supallee2", elimal2);
        };   
 ////////// jardin3
+/////////// arbres jardin3 
+var valarb3="off";
+  document.getElementById("adarb3").onclick = function() 
+      {
+      var valarb3="on"
+      Shiny.onInputChange("adtree3", valarb3);
+       valarb3 = "off"
+      setTimeout(function(){Shiny.onInputChange("adtree3",valarb3)}, 50);
+      
+       };
+  
 
+document.getElementById("suparb3").onclick = function() 
+   {
+       var elimarb3 =0;
+       Shiny.onInputChange("suptree3", elimarb3);
+       numarb3=prompt("Numero à supprimer?:");
+       if (numarb3==null) {
+          elimarb3= 0;    
+          }else{
+       suparbre3 = confirm("Supprimer la ligne"+numarb3+"?");
+       if( suparbre3== true) {
+          elimarb3=numarb3; 
+          }else{
+         elimarb3 = 0;   
+       }}
+        Shiny.onInputChange("suptree3", elimarb3);
+       };
+
+/// allees jardin3
+
+document.getElementById("adal3").onclick = function() 
+      {
+      var alajout3="on"
+      Shiny.onInputChange("adallee3", alajout3);
+       alajout3 = "off"
+      setTimeout(function(){Shiny.onInputChange("adallee3",alajout3)}, 50);
+       };
+  
+
+
+document.getElementById("supal3").onclick = function() 
+   {
+       var elimal3 =0;
+       Shiny.onInputChange("supallee3", elimal3);
+       numallee3=prompt("Numero à supprimer?:");
+       if (numallee3==null) {
+        elimal3= 0;
+          }else{
+       supallee3 = confirm("Supprimer la ligne"+numallee3+"?");
+       if( supallee3== true) {
+          elimal3=numallee3; 
+          }else{
+         elimal3 = 0;   
+       }}
+        Shiny.onInputChange("supallee3", elimal3);
+       };   
 /////////////// fin   
  });       
