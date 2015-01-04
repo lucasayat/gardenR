@@ -24,7 +24,6 @@ shinyServer(function(input, output, clientData, session) {
   
   #########
 
-
   don<-readRDS("data/jardini")
   options(stringsAsFactors = FALSE)
   param <- read.csv("data/param.csv")
@@ -308,6 +307,7 @@ output$parselb<-renderText({
 
 ########envoi des données de la parcelle selectonnée 
 observe({
+ 
    japar()
   if(!is.null(japar())) {nomparsel<-japar()[1]
   }else{
@@ -1112,7 +1112,14 @@ output$tabpar<- renderTable({
 
 output$planleg<- renderUI ({ 
   
-  # newdon<-json2Ractu(wh=wh(),wm=wm(),wb=wb())
+#   withProgress(message = 'Calculation in progress',
+#                detail = 'This may take a while...', value = 0, {
+#                  for (i in 1:15) {
+#                    incProgress(1/15)
+#                    #Sys.sleep(0.25)
+#                  }
+#                })
+
   data<-tempar()
   data<-data[data$legume!="aucun",]
   
