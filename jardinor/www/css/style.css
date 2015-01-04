@@ -264,12 +264,11 @@ text-align:center;
    background-color: #c4dcf3;
    color:blue;
    } 
-   
+/*   
 .datepicker{
-  width:85%;
-  
+  width:85%; 
 }  
-   
+*/   
  #sem1,#sem2,#plant1,#plant2,#rec1,#rec2,#finrec1,#finrec2 
  { 
    font-size:12px; 
