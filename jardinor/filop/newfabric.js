@@ -1235,11 +1235,11 @@ function ungrid(jardin) {
                 var OriginX=new Array();
                 var OriginY= new Array();               
                 var refRect;
-                //var ram1=jardin._offset.left;
-                //var ram2=jardin._offset.top;  
+                var ram1=jardin._offset.left;
+                var ram2=jardin._offset.top;  
                 
-                var ram1=495.2812805175781;
-                var ram2=259.74307175292967;
+               // var ram1=495.2812805175781;
+                //var ram2=259.74307175292967;
               // console.log("ram1 ="+ram1); 
                //console.log("ram2 ="+ram2); 
                 
@@ -1258,7 +1258,7 @@ function ungrid(jardin) {
                        
                     OriginX.push(posX-ram1);
                     OriginY.push(posY-ram2);
-                   console.log("originX :"+ OriginX);
+                  // console.log("originX :"+ OriginX);
                     
                     //Creating the rectangle object
                     var rect=new fabric.Rect({
