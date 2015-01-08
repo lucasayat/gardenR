@@ -1235,12 +1235,15 @@ function ungrid(jardin) {
                 var OriginX=new Array();
                 var OriginY= new Array();               
                 var refRect;
-                var ram1=jardin._offset.left;
-                var ram2=jardin._offset.top;  
+                //var ram1=jardin._offset.left;
+                //var ram2=jardin._offset.top;  
                 
+                var ram1=495.2812805175781;
+                var ram2=259.74307175292967;
+              // console.log("ram1 ="+ram1); 
+               //console.log("ram2 ="+ram2); 
                 
-                if( canDraw ) {
-                
+                if( canDraw && ram1>10) {               
                 //Setting the mouse events
                 jardin.on('mouse:down',function(event){
                     //Defining the procedure
@@ -1272,7 +1275,7 @@ function ungrid(jardin) {
                   // console.log(rect);
                 });
                 }
-
+   
                 jardin.on('mouse:move', function(event){
                     // Defining the procedure
                   if(refRect) {
@@ -1299,14 +1302,15 @@ function ungrid(jardin) {
                 jardin.on('mouse:up',function(){ 
                  // jardin.calcOffset(); 
                 canDraw = false; 
-                if(rec ) {
-                 jarecnew(jardin);
+                
+                if(rec && refRect ) {
+                 jarecnew(jardin);                       
                   rec = false;
           //setTimeout(function(){ jardin.deactivateAll().renderAll(); },500);   
-               jardin.deactivateAll().renderAll();             
-                            
+               jardin.deactivateAll().renderAll();                           
                 }
-               
+                
+                
                 });
 
  }
