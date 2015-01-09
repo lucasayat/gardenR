@@ -589,7 +589,7 @@ document.getElementById("rec_b").onclick = function()
 	jarecLert.display();
 
 }
-////////// modifs après création de parcelle
+////////// nom nouvelle parcelle
  var jarecnew =  function (jardin) {
           
       if (jardin == can.h1) {              
@@ -616,6 +616,14 @@ document.getElementById("rec_b").onclick = function()
 
      /////////test nouveau nom de parcelle existant
          nomparid = id_nouvelle_parcelle;
+         
+         if(nomparid==null)
+         {
+         var delob=jardin.getActiveObject();
+         jardin.remove(delob);
+         return;
+         }
+         
          var same = false;
          if(partab)
          {
