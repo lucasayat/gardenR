@@ -1,7 +1,8 @@
 
 
 library("shiny")
-# setwd("~/jardinR/")
+# setwd("~/gardenR/potageR/")
+# setwd("~/gardenR/")
 # runApp("potageR")
 # rm(list=ls())
 
@@ -13,28 +14,41 @@ library("png")
 
 source("www/jarplot.R")
 source("www/json2R.R")
+don<-readRDS("data/jardon.rds")
 
 #######
 shinyServer(function(input, output, clientData, session) {
 
-  don14<-readRDS("data/jardin2014.rds")
+  don14<-readRDS("data/jardin2014")
   
-  tabal<-readRDS("data/datal")
+  tabal<-don[[4]]
   tabal<-subset(tabal, tabal$j != "")
   saveRDS(tabal,file="data/datal")
-  tab<-readRDS("data/trees")
+  tab<-don[[3]]
   l<-length(tab)
   tab<-subset(tab,tab$nom != "" & tab$jar != "")
   saveRDS(tab,file="data/trees")
 
-  ##### 
+  ######### nom des jardins
+  output$nomjard1<-renderText({
+    n1<-"Jardin du haut"
+    return(n1)
+  })
+  
+  output$nomjard2<-renderText({
+    n2<-"Jardin du milieu"
+    return(n2)
+  })
+  
+  output$nomjard3<-renderText({
+    n3<-"Jardin du bas"
+    return(n3)
+  })
 ################verifs
 output$verif<-renderTable({
 'hello'
   
 })
-
-
 
   ######## reprise du fichier tempar toute les 1 secondes   
   
@@ -54,9 +68,12 @@ wh<-reactive({
   if(!is.null(input$json_h))
   {
     rjon_h<-fromJSON(input$json_h)
+    
     wh<-rjon_h$objects
     wh<-subset(wh, wh$width>10 & wh$height>10)
-    wh<-extract_can(wh,"canh")
+    saveRDS(wh,"data/jsonessai.rds")
+    
+    wh<-extract_can(wh)
     return(wh)
   }
   
@@ -69,7 +86,7 @@ wm<-reactive({
     rjon_m<-fromJSON(input$json_m)
     wm<-rjon_m$objects
     wm<-subset(wm, wm$width>10 & wm$height>10)
-    wm<-extract_can(wm,"canm")
+    wm<-extract_can(wm)
     return(wm)
   }
 })
@@ -80,16 +97,31 @@ wb<-reactive({
     rjon_b<-fromJSON(input$json_b)
     wb<-rjon_b$objects
     wb<-subset(wb, wb$width>10 & wb$height>10)
-    wb<-extract_can(wb,"canb")
+    
+    wb<-extract_can(wb)
     return(wb)
   }
 })
+
 ######### synchronisation de newdon (taille et position des parcelles) et tempar(reste)
 newdon<-reactive({
-    m<-json2Ractu(wh=wh(),wm=wm(),wb=wb())
-    
-   return(m)
+  input$rec1
+  input$rec2
+  input$rec3
+  input$parnew
+  input$parsup
+  input$fichactu
+  input$jarold
+  
+  m<-json2Ractu(wh=wh(),wm=wm(),wb=wb()) 
+  if(is.null(m))
+  {
+    m<-don[[2]]
+  } 
+  saveRDS(m,"data/newdon")  
+  return(m)
 })
+
 
 
 ############envoi dxonnées pour remplissage des canvas au depart après choix d'un fichier RDS
@@ -98,15 +130,14 @@ jar<-reactive ({
  input$jarold
   inFile <- input$jarold 
  if (is.null(inFile))
- { jar<-readRDS("data/newdon.rds")
+ { jar<-don[[2]]
         }else{
   jar<-readRDS(inFile$datapath)
+  jar<-jar[[2]]
   }
   return(jar)
 
 })
-
-
 
 
 observe({
@@ -118,7 +149,7 @@ observe({
     tempar<-subset(newdon,select=c(parcelle,jardin,texver,legume,nbran,datesem,dateplant,daterec,
                                    finrec,comment,legume2,nbran2,datesem2,dateplant2,daterec2,
                                    finrec2,comment2))
-    
+    leg14<-readRDS("data/jardin2014")
     saveRDS(tempar,file="data/tempar")   
     observe({  
       #newdon <- readRDS("~/ajar/jarplan/data/newdon.rds")
@@ -501,18 +532,19 @@ output$tabpar<- renderTable({
 
 output$archo <- renderPlot({
   
-  jardin(23,21,titre="Jardin du haut")
+  jardin(23,21,titre=paste("Jardin du haut",an))
   coloral(0,0,21,1,coul="lightblue")
   coloral(0,23,21,24,coul="lightblue")  
   coloral(11,1,11.5,23)
   coloral(2,12.5,11,13)
-
-  if(input$ano==2014) {donan<-don14}
-  if(input$ano==2015) {donan<-newdon}
   
-  loch<-subset(donan,donan$jardin=="H")
+  
+  if(input$ano==2014) {donan<-leg14}
+  if(input$ano==2015) {donan<-newdon()}
+  
+  loch<-subset(donan,donan[,11]=="H")
   loch$parcelle<-as.character(loch$parcelle)
-  loch$legume<-as.character(loch$legume)
+  #loch$legume<-as.character(loch$legume)
   
   nbH<-nrow(loch)
   if (nbH>=1) {
@@ -520,10 +552,10 @@ output$archo <- renderPlot({
     for (i in 1:nbH)
     {
       
-      couleur<-param[param$list==loch$legume[i],3]
-    
+      couleur<-param[param$list==loch$legume[[i]][1],3]
+      
       careleg(loch$colegi[i],loch$linegi[i],loch$colege[i],loch$linege[i],
-              coul=couleur,rect="TRUE",parc=loch$legume[i],
+              coul=couleur,legs=loch$legume[i],
               texver=loch$texver[i])
     }
   }  
@@ -532,24 +564,24 @@ output$archo <- renderPlot({
 
 output$jaromil <- renderPlot({
   
-  jardin(60,10,titre="Jardin du milieu")
+  jardin(60,10,titre=paste("Jardin du milieu",an))
   
-
-  if(input$anm==2014) {donan<-don14}
-  if(input$anm==2015) {donan<-newdon}
+  
+  if(input$anm==2014) {donan<-leg14}
+  if(input$anm==2015) {donan<-newdon()}
   
   locm<-subset(donan,donan[,11]=="M")
   locm$parcelle<-as.character(locm$parcelle)
-  locm$legume<-as.character(locm$legume)
+  #locm$legume<-as.character(locm$legume)
   
   nbM<-nrow(locm)
   if (nbM>=1) {
     
     for (i in 1:nbM)
     {
-      couleur<-param[param$list==locm$legume[i],3]
+      couleur<-param[param$list==locm$legume[[i]][1],3]
       careleg(locm$colegi[i],locm$linegi[i],locm$colege[i],locm$linege[i],
-              coul=couleur,rect="TRUE",parc=locm$legume[i],
+              coul=couleur,legs=locm$legume[i],
               texver=locm$texver[i])
     }
   }  
@@ -558,27 +590,28 @@ output$jaromil <- renderPlot({
 
 output$jaroba <- renderPlot({
   
-  jardin(60,15,titre="Jardin du bas")
-
-  if(input$anb==2014) {donan<-don14}
-  if(input$anb==2015) {donan<-newdon}
+  jardin(60,15,titre=paste("Jardin du bas",an))
+  
+  if(input$anb==2014) {donan<-leg14}
+  if(input$anb==2015) {donan<-newdon()}
   
   locb<-subset(donan,donan[,11]=="B")
   locb$parcelle<-as.character(locb$parcelle)
-  locb$legume<-as.character(locb$legume)
+  #locb$legume<-as.character(locb$legume)
   
   nbB<-nrow(locb)
   if (nbB>=1) {
     
     for (i in 1:nbB)
     {
-      couleur<-param[param$list==locb$legume[i],3]
-  
+      couleur<-param[param$list==locb$legume[[i]][1],3]
+      
       careleg(locb$colegi[i],locb$linegi[i],locb$colege[i],locb$linege[i],
-              coul=couleur,rect="TRUE",parc=locb$legume[i],
+              coul=couleur,legs=locb$legume[i],
               texver=locb$texver[i])
     }
-  }  
+  } 
+  
 })
 
 ############### chemins
@@ -597,212 +630,30 @@ output$chemb1 <- output$chemb2 <- renderPlot ({
 
 
 
-###############archives calendrier legumes
-# output$planlegold <- renderUI ({ 
-#   
-# 
-#   if(input$anileg==2014) {donan<-don14
-#                             an<-2014   }
-#   if(input$anileg==2015) {donan<-newdon
-#                             an<-2015}
-#   data<-donan[donan$legume[1]!="aucun",]
-#   
-#   l<-length(data$legume)
-#   
-#   output$plotold<-renderPlot({planleg(data=data,date=input$dateleg,an=an)})     
-#   
-#   w<-"800px"
-#   h <-paste0(30*l+200,"px")
-#   
-#   plotOutput("plotold",width=w,height=h)
-#   
-#   
-# })
-# 
-# 
-# 
-# ###########tableau des legumes
-# 
-# output$tableg <-  renderDataTable({
-#  
-#   leg2014<-tableg(datan=newdon,an=2015)
-#   leg2013<-tableg(datan=don14,an=2014)
-#   
-#   legan<-merge(leg2013,leg2014,by="Legume",all=TRUE,sort=TRUE)
-#   legan<-legan[order(legan$Legume),]
-#   return(legan)
-# },options = list(bSortClasses = TRUE,aLengthMenu = c(10, 25, 50), 
-#                  iDisplayLength = 50),
-# )
-
-##############""
-  }
-})
-
-############ fin chargement fichier
-#################arbres et allées
-# 
-# output$tbl <- renderHtable({
-#   trees<-readRDS("data/trees")
-#   if(is.null(input$tbl ))
-#   {
-#     for (n in 1:3) 
-#     {
-#       w<-c(max(as.numeric(trees$num))+1,0,0,"",0,0,"","","")      
-#       trees<-rbind(trees,w) 
-#       tbl<-trees
-#     }}else{
-#       tbl<-input$tbl
-#     }
-#   cols = c(1,2,3,5,6)    
-#   tbl[,cols] = apply(tbl[,cols], 2, function(x) as.numeric(as.numeric(x)))
-#   validate(tbl)
-#   cachedTbl <<- tbl
-#   return(tbl) 
-# })
-# 
-# 
-# validate <- function(tbl){
-#   
-#   updateTableStyle(session, "tbl", "poire", 
-#                    which(tbl$scr==4), 1:l)
-#   updateTableStyle(session, "tbl", "pomme", 
-#                    which(tbl$scr==1), 1:l)
-#   updateTableStyle(session, "tbl", "peche", 
-#                    which(tbl$scr==6), 1:l)
-#   updateTableStyle(session, "tbl", "rub", 
-#                    which(tbl$scr==8), 1:l)
-#   updateTableStyle(session, "tbl", "prune", 
-#                    which(tbl$scr==5), 1:l)
-#   updateTableStyle(session, "tbl", "gros", 
-#                    which(tbl$scr==8), 1:l)
-#   
-#   
-# }
-# 
-# 
-# observe({
-#   
-#   trimodif<-input$tbl
-#   if(!is.null(trimodif))
-#   {  
-#     tab<-trimodif
-#   }else{
-#     tab<-readRDS("data/trees")
-#   }
-#   
-#   cols = c(1, 2, 3, 5, 6)    
-#   tab[,cols] = apply(tab[,cols], 2, function(x) as.numeric(as.numeric(x)))
-#   saveRDS(tab,file="data/trees")
-# })
-# 
-# output$explic<-renderTable({
-#   ex<-data.frame(codes=c("num","l","t","nom","scr","taille","jar"),
-#                  Explications=c("Numero de l'arbre",
-#                                 "Distance du bord gauche en metres",
-#                                 "Distance du haut en metres",
-#                                 "Nom de la variete",
-#                                 "code type: 1=pommier, 4=poirier, 6=pecher",
-#                                 "Taille de l'image en cex",
-#                                 "Jardin: H haut,M milieu, B bas"))
-#   return(ex)
-# }, include.rownames=FALSE,digits=0
-# )
-# 
-# 
-# output$tabal <- renderHtable({
-#   datal <-readRDS("data/datal")
-#   
-#   if(is.null(input$tabal ))
-#   {
-#     for(n in 1:3)
-#     {
-#       w<-c(max(as.numeric(datal$num))+1,0,0,0,0,"","")
-#       datal<-rbind(datal,w)
-#       tbl<-datal
-#     }
-#     
-#   }else{
-#     tbl<-input$tabal
-#   }
-#   cols = c(1:5)    
-#   tbl[,cols] = apply(tbl[,cols], 2, function(x) as.numeric(as.numeric(x)))
-#   validate(tbl)
-#   cachedTbl <<- tbl
-#   return(tbl) 
-# })
-# 
-# observe({
-#   modifal<-input$tabal
-#   if(!is.null(modifal))
-#   {  
-#     tab<-modifal
-#   }else{
-#     tab<-readRDS("data/datal")
-#   }
-#   cols = c(1:5)    
-#   tab[,cols] = apply(tab[,cols], 2, function(x) as.numeric(as.numeric(x)))
-#   saveRDS(tab,file="data/datal")
-# })
-# 
-# output$colal<-renderText({
-#   input$colex
-#   
-# })
-# 
-# 
-# 
-# #########couleurs
-# 
-# tab_param<-reactive({
-#   param <- read.csv("data/param.csv",stringsAsFactors =FALSE)
-#   if(!is.null(input$couleg))
-#   {
-#     param$coul[param$list==input$hexaleg]<-input$couleg
-#     write.csv(param,file="data/param.csv", row.names=FALSE)
-#     return(param)
-#   }else{
-#     return(param)
-#   }
-#   
-# }) 
-# 
-# 
-# output$couplot<-renderPlot({
-#   par(mar=c(0,0,0,0))
-#   tab<-tab_param()
-#   n<-nrow(tab)
-#   plot(x=c(0,0),y=c(2,10),xlim=c(0,1),ylim=c(0,n)
-#        ,cex=0,axes=T,xlab="",ylab="")
-#   
-#   for (i in 1:n)
-#   {
-#     text(0.6,n+1-i+0.5,labels=tab[i,1],pos=4,cex=1.5)     
-#     rect(0.1,n+1-i,0.6,n+1-i+1,col=tab[i,3],border=tab[i,3])
-#     legicon<-param$icon[param$list==tab[i,1]]
-#     image<-get(legicon)
-#     
-#     if(length(image)>0){     
-#       rasterImage(image,0,n+1-i,0.07,n+1-i+1)}      
-#   } 
-#   
-# })
 ###########sauvegarde
 output$fichactu <- downloadHandler(
   filename = function() { paste0("jardin_",Sys.Date(),".rds")},
   
   content = function(file) {
-    # newdon<-readRDS("data/newdon")
-    newdon<-newdon()
-    saveRDS(newdon,file)
+  
+    dimjars<-data.frame( long=c(23,60,60),larg=c(21,10,15))
+    #leg<- readRDS("data/newdon")
+    leg<-newdon()
+    trees<-don[[3]]
+    datal<-don[[4]]
+    
+    jardon<-list(dimjars,leg,trees,datal)
+    
+    saveRDS(jardon,file)
     
   },contentType = 'application/RDS'
 )
 
 
+  }
+})
+
 #########fin
-
-
 })
 
 

@@ -199,8 +199,6 @@ cam.m1.renderAll();
  var json = JSON.stringify(cam.m1);
  Shiny.onInputChange("json_m", json);
 
-
-
 });
 
 

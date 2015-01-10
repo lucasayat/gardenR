@@ -28,8 +28,8 @@ shinyUI(navbarPage(
                                           includeScript("filop/fabric.min.js"),
                                           includeScript("filop/lert.js"), 
                                           includeCSS("www/css/style.css"),
-                                          includeCSS("www/css/lert.css"),
-                                          includeCSS("www/css/bundled-css.css")
+                                          includeCSS("www/css/lert.css")
+                                          
                                         )),               
                             
                             
@@ -132,7 +132,7 @@ shinyUI(navbarPage(
                                                                                                       "moyen"=1.5,
                                                                                                       "gros"=2 ,
                                                                                                       "très gros"=2.5)),
-                                                  numericInput("plantan1","Année de plantation",value=format(Sys.Date(),"%Y")),
+                                                  textInput("plantan1","Année de plantation",value=format(Sys.Date(),"%Y")),
                                                   textInput("div1","commentaires"),
                                                   tags$input(type = "button",id = "adarb1" ,value="Ajouter cette plante"),
                                                   br(),br(),

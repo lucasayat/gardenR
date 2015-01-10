@@ -57,6 +57,7 @@ var h_cam = long[1]*caro;
 var w_cab = larg[2]*caro;
 var h_cab = long[2]*caro;
 
+
     var can = {
         h1 : new fabric.Canvas('canh1', {width : w_canh, height : h_canh}),
         h2 : new fabric.Canvas('canh2', {backgroundColor: 'transparent',width : w_canh, height : h_canh,})

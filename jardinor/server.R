@@ -39,7 +39,21 @@ observe({
 
   
 })
+######### nom des jardins
+output$nomjard1<-renderText({
+  n1<-"Jardin du haut"
+  return(n1)
+})
 
+output$nomjard2<-renderText({
+  n2<-"Jardin du milieu"
+  return(n2)
+})
+
+output$nomjard3<-renderText({
+  n3<-"Jardin du bas"
+  return(n3)
+})
 
   ######## reprise du fichier tempar toute les 1 0.5s  
   
@@ -1065,21 +1079,7 @@ output$tabal3 <-  renderTable({
 )
 
 ########### fin structure des jardins
-######### nom des jardins
-output$nomjard1<-renderText({
-  n1<-"Jardin du haut"
-  return(n1)
-})
 
-output$nomjard2<-renderText({
-  n2<-"Jardin du milieu"
-  return(n2)
-})
-
-output$nomjard3<-renderText({
-  n3<-"Jardin du bas"
-  return(n3)
-})
 ##############tableau des arbres
 
 
