@@ -1,10 +1,15 @@
+#  Copyright (C) 2014 Jean-luc Reuillon
+#  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 library("shiny")
 library("shinyBS")
-#library("shinyTable")
 library("jsonlite")
-#library("rCharts")
 library("png")
-options(RCHART_WIDTH = 800, RCHART_HEIGHT = 400)
 ##########
 shinyUI(navbarPage(
   
@@ -14,13 +19,22 @@ shinyUI(navbarPage(
            
            headerPanel("",                
                tags$head(
-    tags$script(type="text/javascript", src = "newfabric.js"),
-    tags$script(type="text/javascript", src = "fabric.min.js"),
-    tags$script(type="text/javascript", src = "lert.js"),
-    
-    tags$link(rel="stylesheet", type="text/css",href="style.css"),
-    tags$link(rel="stylesheet", type="text/css",href="lert.css")
+                 tags$script(type="text/javascript", src = "filop/newfabric.js"),
+                 tags$script(type="text/javascript", src = "filop/fabric.min.js"),
+                 tags$script(type="text/javascript", src = "filop/lert.js"),
+                 tags$link(rel="stylesheet", type="text/css",href="css/style.css"),
+                 tags$link(rel="stylesheet", type="text/css",href="css/lert.css")
+                 
+#                  includeScript("www/filop/newfabric.js"),
+#                 # includeScript("filop/adelar.js"),
+#                  #includeScript("filop/supev.js"),
+#                  includeScript("www/filop/fabric.min.js"),
+#                  includeScript("www/filop/lert.js"), 
+#                  includeCSS("www/css/style.css"),
+#                  includeCSS("www/css/lert.css")                                
+                 
      )),
+
     fluidRow(
       
       column(5,
@@ -30,11 +44,12 @@ shinyUI(navbarPage(
       column(6,
              h2("Organiseur de jardin potager :"),        
              h4("Structures:"),
-             h6("A la première utilisation, définir les",span("dimensions ",style="color:blue"), "du ou des jardins",
-                "puis positionner les", span("arbres fruitiers ",style="color:blue"), "et les", span("allées. ",style="color:blue"),
-                " Sauvegarder le fichier et le recharger pour que ces éléments apparaissent dans le jardin des légumes."),
+            h6("A la première utilisation, utiliser ",a(href="https://lucasayat.shinyapps.io/jardinor/","JARDINOR en cliquant ici"), 
+                "pour définir les",span("dimensions ",style="color:blue"), "du ou des jardins",
+                "et positionner les structures fixes : les", span("arbres fruitiers ",style="color:blue"), "et les", span("allées. ",style="color:blue"),
+                " Sauvegarder le fichier et le charger dans cette appli pour que ces éléments apparaissent dans le jardin de légumes."),
              br(),
-             h4("Légumes: plan des légumes de l'année en cours."),
+             h4("Jardins: plan des légumes de l'année en cours."),
              h6("Cliquer sur", span("creer ",style="color:blue"), "puis dessiner une parcelle avec la souris et la nommer.",
                 "Selectionner un ou des légumes et le nombre de rangs sur le panneau de gauche.",
                 "Renseigner les dates de semis, plantation et récolte probables puis plus tard réalisées.",
@@ -142,23 +157,30 @@ shinyUI(navbarPage(
                              tableOutput("tabpar")
                              
                       ))),
-             column(1),
-             column(8,
+             column(9,
                     
                     tabsetPanel(
                       
                       ###################
                       tabPanel(h4(textOutput("nomjard1")), 
+
                                tabsetPanel(
-                                 tabPanel(h5("Période 1"),  
-                                          textOutput('parselh'),
-                                          tags$input(type = "button",id = "pos" ,value="Creer"),
-                                          tags$input(type = "button",id = "rec" ,value="Enregistrer"),
-                                          
-                                          tags$input(type = "button",id = "del" ,value="Supprimer"),
-                                          
-                                          tags$input(type = "button",id = "png" ,value="Image"),
-                                          
+                                 
+                                 tabPanel(h5("Période 1"), 
+                                fluidRow(
+                                    column(2,
+                                                   
+                                                   textOutput('parselh'),
+                                                   tags$input(type = "button",id = "pos" ,value="Creer"),
+                                                   tags$input(type = "button",id = "rec" ,value="Enregistrer"),
+                                                   
+                                                   tags$input(type = "button",id = "del" ,value="Supprimer"),
+                                                   
+                                                   tags$input(type = "button",id = "png" ,value="Image")     
+                                                   
+                                            ),
+                                            column(10,         
+                                    
                                           
                                           tags$canvas(id="canh1",style="border:3px solid #0000ff"),
                                           
@@ -168,7 +190,7 @@ shinyUI(navbarPage(
                                              tags$input(type = "button",id = "ungrid" ,value="ôter la grille"),
                                              tags$input(type = "button",id = "grid" ,value="remettre la grille")
                                              
-                                          )),
+                                          )))),
                                  tabPanel(h5("Période 2"), 
                                           tags$canvas(id="canh2",style="border:3px solid #0000ff")),
                                  
@@ -186,21 +208,23 @@ shinyUI(navbarPage(
                       ###############
                       tabPanel(h4(textOutput("nomjard2")), 
                                tabsetPanel(id="jami",
-                                           tabPanel(h5("Période 1"),      
+                                           tabPanel(h5("Période 1"), 
+                                                    fluidRow(
+                                                      column(2,  
                                                     textOutput('parselm'),
                                                     tags$input(type = "button",id = "pos_m" ,value="Creer"),
                                                     tags$input(type = "button",id = "rec_m" ,value="Enregistrer"),
                                                     
                                                     tags$input(type = "button",id = "del_m" ,value="Supprimer"),
                                                     
-                                                    tags$input(type = "button",id = "png_m" ,value="Image"), 
-                                                    
+                                                    tags$input(type = "button",id = "png_m" ,value="Image")), 
+                                                    column(10,
                                                     tags$canvas(id="cam1",style="border:3px solid #0000ff"),
                                                     
                                                     tags$input(type = "button",id = "gocolm" ,value="appliquer la couleur -->"),
                                                     tags$input(type = "color",id = "colm" ,value="#efeef2"),
                                                     tags$input(type = "button",id = "ungrid_m" ,value="ôter la grille"),
-                                                    tags$input(type = "button",id = "grid_m" ,value="remettre la grille")),
+                                                    tags$input(type = "button",id = "grid_m" ,value="remettre la grille")))),
                                            
                                            tabPanel(h5("Période 2"),              
                                                     tags$canvas(id="cam2",style="border:3px solid #0000ff")),
@@ -220,22 +244,23 @@ shinyUI(navbarPage(
                       tabPanel(h4(textOutput("nomjard3")), 
                                tabsetPanel(id="jaba",
                                            tabPanel(h5("Période 1"),  
-                                                    
+                                                    fluidRow(
+                                                      column(2,    
                                                     textOutput('parselb'),
                                                     tags$input(type = "button",id = "pos_b" ,value="Creer"),
                                                     tags$input(type = "button",id = "rec_b" ,value="Enregistrer"),
                                                     
                                                     tags$input(type = "button",id = "del_b" ,value="Supprimer"),
                                                     
-                                                    tags$input(type = "button",id = "png_b" ,value="Image"),
-                                                    
-                                                    
+                                                    tags$input(type = "button",id = "png_b" ,value="Image")),
+                                                   column(10,
+                                                                                  
                                                     tags$canvas(id="cab1",style="border:3px solid #0000ff"),
                                                     
                                                     tags$input(type = "button",id = "gocolb" ,value="appliquer la couleur ->"),
                                                     tags$input(type = "color",id = "colb" ,value="#efeef2"),
                                                     tags$input(type = "button",id = "ungrid_b" ,value="ôter la grille"),
-                                                    tags$input(type = "button",id = "grid_b" ,value="remettre la grille")    
+                                                    tags$input(type = "button",id = "grid_b" ,value="remettre la grille")))    
                                            ),
                                            tabPanel(h5("Période 2"), 
                                                     tags$canvas(id="cab2",style="border:3px solid #0000ff")
@@ -251,8 +276,33 @@ shinyUI(navbarPage(
                                                       column(8,
                                                              plotOutput("jaroba",width="600px",height="2000px")
                                                              
-                                                      )))))))))
+                                                      ))))))))),
   
+  ###############
+  
+  ##########
+  tabPanel(h4("Calendrier"),
+           dateInput(inputId="dateleg",label="Date",format="yyyy-mm-dd",language="fr",value=Sys.Date()),
+           fluidRow(
+             column(6,   
+                    h3("Planning 2015"),
+                    
+                    uiOutput("planleg")),
+             column(6, 
+                    # h3("Archives"),
+                    
+                    sliderInput("anileg","annee",min=2014,max=2015,value=2014,step=1,animate=T),
+                    uiOutput("planlegold")))),
+  
+  #####################
+  tabPanel(h4("Tableaux"),
+           fluidRow(
+             column(5,
+                    h4("Liste des legumes"),       
+                    dataTableOutput("tableg")),
+             column(7,
+                    h4("Liste des parcelles"),     
+                    dataTableOutput("tabparcel"))))
   
 ###############
             ))

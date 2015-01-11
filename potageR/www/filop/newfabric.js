@@ -4,7 +4,7 @@ $(document).ready(function(){
 var caro=40;
 //var col_parcelle ="#f4efe9";
 var leges =20;
-
+/*
 var w_canh = 21*caro;
 var h_canh = 23*caro;
 
@@ -13,6 +13,7 @@ var h_cam = 60*caro;
 
 var w_cab = 15*caro;
 var h_cab = 60*caro;
+*/
 var partab =[];
 
 Shiny.addCustomMessageHandler("tempar",function(par) {
@@ -26,7 +27,6 @@ var parid=[];
 var parnew = "stop";
 var selstop="stop";
 var change;
-
 
 var samid;
 var nomparid;
@@ -47,20 +47,33 @@ var legid =['aucun','artich','asperg','auber','betrav', 'chard','carot','celeria
 var trid=['apple','apricot','cherry','pear','plum','peach','rubarb','gb'];
 
 ////// creation canvas
+Shiny.addCustomMessageHandler("coorcan",function(message) {
+var long=message.long;
+var larg=message.larg;
+
+var  w_canh = larg[0]*caro;
+var  h_canh = long[0]*caro;
+
+var w_cam = larg[1]*caro;
+var h_cam = long[1]*caro;
+
+var w_cab = larg[2]*caro;
+var h_cab = long[2]*caro;
+
+////// creation canvas
     var can = {
-        h1 : new fabric.Canvas('canh1', {width : w_canh, height : h_canh}),
-        h2 : new fabric.Canvas('canh2', {backgroundColor: 'transparent',width : w_canh, height : h_canh,})
+  h1 : new fabric.Canvas('canh1', {width : w_canh, height : h_canh}),
+  h2 : new fabric.Canvas('canh2', {backgroundColor: 'transparent',width : w_canh, height : h_canh,})
     };
   
-
     var cam = {
-        m1 : new fabric.Canvas('cam1', {width : w_cam, height : h_cam}),
-        m2 : new fabric.Canvas('cam2', {backgroundColor: 'transparent',width : w_cam, height : h_cam,})
+    m1 : new fabric.Canvas('cam1', {width : w_cam, height : h_cam}),
+    m2 : new fabric.Canvas('cam2', {backgroundColor: 'transparent',width : w_cam, height : h_cam,})
     };
 
     var cab = {
-        b1 : new fabric.Canvas('cab1', {width : w_cab, height : h_cab}),
-        b2 : new fabric.Canvas('cab2', {backgroundColor: 'transparent',width : w_cab, height : h_cab,})
+    b1 : new fabric.Canvas('cab1', {width : w_cab, height : h_cab}),
+    b2 : new fabric.Canvas('cab2', {backgroundColor: 'transparent',width : w_cab, height : h_cab,})
     };
 
 //var can.h1 = new fabric.Canvas('canh',{width : w_canh, height : h_canh});
@@ -376,8 +389,8 @@ var objact = can.h1.getActiveObject();
 if ( objact) { 
     nomparid = objact._objects[1].text;
     Shiny.onInputChange("OK_h","OK");
-     Shiny.onInputChange("OK_m","NO");
-     Shiny.onInputChange("OK_b","NO");
+    Shiny.onInputChange("OK_m","NO");
+    Shiny.onInputChange("OK_b","NO");
 }else{
   
   nomparid = null;
@@ -472,9 +485,6 @@ document.getElementById("rec_b").onclick = function()
    {
      jarec(cab.b1);
 };
-
-
-
 
 ////////// lert sur enregistrement
  var jarec =  function (jardin) {
@@ -596,6 +606,16 @@ document.getElementById("rec_b").onclick = function()
 
      /////////test nouveau nom de parcelle existant
          nomparid = id_nouvelle_parcelle;
+        
+        if(nomparid==null)
+         {
+         var delob=jardin.getActiveObject();
+         jardin.remove(delob);
+         return;
+         }
+         
+         
+         
          var same = false;
         for(var k=0;k<partab.length;k++)
         {
@@ -1205,7 +1225,7 @@ function ungrid(jardin) {
                 var recup = new Array();
                 var i=0;
                 
-                if( canDraw ) {
+               if( canDraw && ram1>10) { 
                 
                 //Setting the mouse events
                 jardin.on('mouse:down',function(event){
@@ -1302,6 +1322,6 @@ jardin.on('object:moving', function (e) {
  limit(cab.b1);
 ////////////
  
-
+});
 
 });

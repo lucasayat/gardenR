@@ -1,3 +1,9 @@
+#  Copyright (C) 2014 Jean-luc Reuillon
+#  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 library("shiny")
@@ -7,13 +13,11 @@ library("shiny")
 # rm(list=ls())
 
 library("shinyBS")
-#library("chron")
 library("jsonlite")
 library("png")
-#library("shinyTable")
 
-source("www/jarplot.R")
-source("www/json2R.R")
+source("garfun/jarplot.R")
+source("garfun/json2R.R")
 don<-readRDS("data/jardon.rds")
 
 #######
@@ -44,6 +48,17 @@ shinyServer(function(input, output, clientData, session) {
     n3<-"Jardin du bas"
     return(n3)
   })
+  ################taille canvas
+  
+  observe({
+    
+    dimjars<-data.frame( long=c(23,60,60),larg=c(21,10,15))
+    
+    session$sendCustomMessage(type='coorcan',message=list(long=dimjars$long,larg=dimjars$larg))
+    
+    
+  }) 
+  
 ################verifs
 output$verif<-renderTable({
 'hello'
@@ -116,7 +131,8 @@ newdon<-reactive({
   m<-json2Ractu(wh=wh(),wm=wm(),wb=wb()) 
   if(is.null(m))
   {
-    m<-don[[2]]
+    m<-readRDS("data/vivid.rds")[[2]]
+
   } 
   saveRDS(m,"data/newdon")  
   return(m)
@@ -627,6 +643,107 @@ output$chem1 <-output$chem2 <-renderPlot ({
 output$chemb1 <- output$chemb2 <- renderPlot ({
   chemin(N=c(0,0.5,0.1,0.5))  
 })
+##################### calendrier legumes
+
+output$planleg<- renderUI ({ 
+  
+  #   withProgress(message = 'Calculation in progress',
+  #                detail = 'This may take a while...', value = 0, {
+  #                  for (i in 1:15) {
+  #                    incProgress(1/15)
+  #                    #Sys.sleep(0.25)
+  #                  }
+  #                })
+  
+  data<-tempar()
+  data<-data[data$legume!="aucun",]
+  
+  l<-length(data$legume)
+  if(l==0) return(NULL)
+  
+  output$plot<-renderPlot({planleg(data=data,date=input$dateleg,an=2015)})
+  
+  w<-"600px"
+  h <-paste0(30*l+200,"px")
+  
+  plotOutput("plot",width=w,height=h)
+  
+  
+})
+###############archives calendrier legumes
+output$planlegold <- renderUI ({ 
+  
+  
+  if(input$anileg==2014) {donan<-leg14
+                          an<-2014   }
+  if(input$anileg==2015) {donan<-newdon()
+                          an<-2015}
+  data<-donan[donan$legume[1]!="aucun",]
+  
+  l<-length(data$legume)
+  
+  output$plotold<-renderPlot({planleg(data=data,date=input$dateleg,an=an)})     
+  
+  w<-"600px"
+  h <-paste0(30*l+200,"px")
+  
+  plotOutput("plotold",width=w,height=h)
+  
+  
+})
+
+###########tableau des legumes
+
+output$tableg <-  renderDataTable({
+  
+  leg2014<-tableg(datan=leg14,an=2014) 
+  
+  newdon<-newdon()
+  if(nrow(newdon)!=0)
+  {
+    leg2015<-tableg(datan=newdon,an=2015) 
+  }else{
+    leg2015<-leg2014[0,]
+    colnames(leg2015)<-c("Legume","Long_2015")
+    
+  } 
+  
+  legan<-merge(leg2014,leg2015,by="Legume",all=TRUE,sort=TRUE)
+  
+  legan<-legan[order(legan$Legume),]
+  return(legan)
+},options = list(orderClasses = TRUE,lengthMenu = c(10, 25, 50), 
+                 pageLength = 50)
+)
+######### tableau des parcelles
+
+output$tabparcel<- renderDataTable({
+  newdon<-newdon()
+  if(nrow(newdon)!=0)
+  {
+    tab<-data.frame(identifiant=newdon$parcelle,
+                    jardin=newdon$jardin,
+                    legume=editleg((newdon$legume)),
+                    long= as.numeric(newdon$height)/caro,
+                    larg=as.numeric(newdon$width)/caro,
+                    rangs=as.numeric(newdon$nbran),
+                    lon=0,commentaires=newdon$comment)
+    
+    for (i in 1:nrow(tab))
+    {
+      tab$lon[i]<-round(max(tab$long[i],tab$larg[i])*tab$rangs[i],0)
+    }
+    
+    tab[,c(1,2,3,6,7,8)]
+  }
+},
+
+options = list(orderClasses = TRUE,lengthMenu = c(10, 30, 60), 
+               pageLength = 30,
+               columnDefs = list(list(sWidth=c("80px"), aTargets=c(list(0),list(1),list(2),list(3),list(4)))))
+#fnInitComplete = I("function(oSettings, json) {alert('Done.');}"))
+
+)
 
 
 

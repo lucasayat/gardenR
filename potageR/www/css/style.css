@@ -1,35 +1,10 @@
-
-.shiny-htable td.prune{
-  background: #c4dcf3;
-  color:blue;
-  text-shadow: 3px 3px 6px #111417; 
+#pot
+{
+    padding:5px;
+   border:4px solid blue;
+   background-color:white;
+   box-shadow:6px 6px 10px gray;
 }
-
-.shiny-htable td.poire{
-  background-color: blue;
-  color: white;
-   text-shadow: 3px 3px 6px #301e00; 
-}
-
-.shiny-htable td.peche{
-  background-color: green;
- color:white;
-  text-shadow: 3px 3px 6px #170706; 
-}
-
-.shiny-htable td.pomme{
-  background-color: red;  
-  color:white;
-  text-shadow: 3px 3px 6px #170706; 
-}
-
-
-.shiny-htable td.gros{
-  background-color: yellow;  
-  color:blue;
-
-}
-
 
 body
 {
@@ -43,7 +18,7 @@ body
 
 label 
 {
-  font-size:12px;
+  font-size:15px;
   display:inline-block;
   height:10px;
   color:blue;
@@ -51,7 +26,7 @@ label
 }
 
 textarea {
-width: 150px;
+width: 95%;
 padding: 0;
 border: 1px solid #ccc;
 }
@@ -80,16 +55,29 @@ color:red;
 font-size : 15px;
 }
 
+#parselh,#parselm,#parselb
+{ 
+position:fixed;
+top:300px; 
+font-size:15px;
+width:100px; 
+height:60px;
+padding: .3em;
+font-weight : bold;
+display:inline-block; 
+color:white;
+background-color: blue;
+text-align:center;
+}
 
 #pos,#pos_m,#pos_b
 {
   position:fixed;
-  top:250px;
-  left:350px;
+  top:400px;
   font-size:12px;
 font-weight : bold;
 color:green;
-width:80px;
+width:100px;
 height:30px;
 background-color: lightgray;
 box-shadow:6px 6px 6px black;
@@ -99,12 +87,11 @@ box-shadow:6px 6px 6px black;
 #rec,#rec_m,#rec_b
 { 
   position:fixed;
-  top:300px;
- left:350px; 
+  top:450px; 
 font-size:12px;
 font-weight : bold;
 color:green;
-width:80px;
+width:100px;
 height:30px;
 background-color: lightgray;
 box-shadow:6px 6px 6px black;
@@ -113,12 +100,11 @@ box-shadow:6px 6px 6px black;
 #del,#del_m,#del_b
 {
   position:fixed;
-  top:350px;
- left:350px;
+  top:500px;
   font-size:12px;
 font-weight : bold;
 color:green;
-width:80px;
+width:100px;
 height:30px;
 background-color: lightgrey;
 box-shadow:6px 6px 6px black;
@@ -129,24 +115,8 @@ box-shadow:6px 6px 6px black;
 #png,#png_m,#png_b
 {
   position:fixed;
-  top:400px;
-  left:350px;
+  top:550px;
   font-size:12px;
-font-weight : bold;
-color:green;
-width:80px;
-height:30px;
-background-color: lightgray;
-box-shadow:6px 6px 6px black;
-}
-
-/*
-#fichactu
-{
-
- top:50px;
-  left:300px;
-font-size:12px;
 font-weight : bold;
 color:green;
 width:100px;
@@ -154,7 +124,8 @@ height:30px;
 background-color: lightgray;
 box-shadow:6px 6px 6px black;
 }
-*/
+
+
 
 #jarold
 {
@@ -162,7 +133,7 @@ box-shadow:6px 6px 6px black;
 font-size:15px;
 font-weight : bold;
 color:green;
-width:250px;
+width:350px;
 height:30px;
 background-color: lightgray;
 box-shadow:6px 6px 6px black;
@@ -200,15 +171,15 @@ box-shadow:6px 6px 6px black;
 
 h6
 {
-font-size:12px;  
+font-size:15px;  
 }
 
 
 h2
 {
-font-size:20px;
+font-size:25px;
 text-align:center; 
-text-shadow: 10px 10px 15px black; 
+text-shadow: 5px 5px 10px gray; 
 color:blue;
 
 }
@@ -228,36 +199,20 @@ h4
 {
 text-align:left; 
 text-shadow: 1px 1px 2px yellow; 
-text-align:center;
+text-align:left;
 }
 
 em
 {
+  
 text-align:center; 
-color:white;
-font-weight : bold;
+color:blue;
+font-size : 13px;
 font-style : italic;
 }
 
 
 
-
-
-#parselh,#parselm,#parselb
-{ 
-position:fixed;
-top:150px; 
-left:350px;
-font-size:15px;
-width:70px; 
-height:60px;
-padding: .3em;
-font-weight : bold;
-display:inline-block; 
-color:white;
-background-color: blue;
-text-align:center;
-}
 
 
 
@@ -289,7 +244,7 @@ text-align:center;
 
  #com1,#com2
  {
-   width : 220px;
+   width : 95%;
  }
  
  
@@ -304,18 +259,20 @@ text-align:center;
    background-color: #c4dcf3;
    color:blue;
    } 
-   
-  
-   
+/*   
+.datepicker{
+  width:85%; 
+}  
+*/   
  #sem1,#sem2,#plant1,#plant2,#rec1,#rec2,#finrec1,#finrec2 
  { 
    font-size:12px; 
-   width:220px; 
+   width:45%;
    height:30px;
    color:blue;
    display:inline-block; 
    background-color: #c4dcf3;
-   text-align:right;
+   text-align:left;
    
    }
 
@@ -380,3 +337,19 @@ width: 75px;
 height: 45px;
 box-shadow:10px 10px 15px blue;
 }
+
+#bagocol1:hover,#bagolig1:hover,#odroicol1:hover,#odroilig1:hover,#trix1:hover,#triy1:hover
+{
+background-color: blue; 
+color:white;
+}
+ #alox1,#aloy1,#albax1,#albay1,#trix1,#triy1
+ { 
+   font-size:13px; 
+   width:50px;
+   color:red;
+   font-weight : bold;
+   display:inline-block;
+   background-color: lightgreen;
+   } 
+
