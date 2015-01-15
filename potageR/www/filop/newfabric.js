@@ -1,32 +1,29 @@
-//Start when the document is loaded
+/*  Copyright (C) 2014 Jean-luc Reuillon 
+  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  This program is distributed in the hope that it will be useful,but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. */
+
 $(document).ready(function(){
 
 var caro=40;
 //var col_parcelle ="#f4efe9";
 var leges =20;
-/*
-var w_canh = 21*caro;
-var h_canh = 23*caro;
 
-var w_cam = 10*caro;
-var h_cam = 60*caro;
-
-var w_cab = 15*caro;
-var h_cab = 60*caro;
-*/
 var partab =[];
 
+/*
 Shiny.addCustomMessageHandler("tempar",function(par) {
  partab = eval(par);
-//console.log("tempar:"+partab.length);
-//console.log("partab de tempar:"+partab);
+console.log("tempar:"+partab.length);
+console.log("partab de tempar:"+partab);
 });
-
+*/
 var parid=[];
 
 var parnew = "stop";
 var selstop="stop";
 var change;
+
 
 var samid;
 var nomparid;
@@ -60,22 +57,27 @@ var h_cam = long[1]*caro;
 var w_cab = larg[2]*caro;
 var h_cab = long[2]*caro;
 
-////// creation canvas
+
     var can = {
-  h1 : new fabric.Canvas('canh1', {width : w_canh, height : h_canh}),
-  h2 : new fabric.Canvas('canh2', {backgroundColor: 'transparent',width : w_canh, height : h_canh,})
-    };
-  
-    var cam = {
-    m1 : new fabric.Canvas('cam1', {width : w_cam, height : h_cam}),
-    m2 : new fabric.Canvas('cam2', {backgroundColor: 'transparent',width : w_cam, height : h_cam,})
+        h1 : new fabric.Canvas('canh1', {width : w_canh, height : h_canh}),
+        h2 : new fabric.Canvas('canh2', {backgroundColor: 'transparent',width : w_canh, height : h_canh,})
+    }; 
+
+      var cam = {
+        m1 : new fabric.Canvas('cam1', {width : w_cam, height : h_cam}),
+        m2 : new fabric.Canvas('cam2', {backgroundColor: 'transparent',width : w_cam, height : h_cam,})
     };
 
-    var cab = {
-    b1 : new fabric.Canvas('cab1', {width : w_cab, height : h_cab}),
-    b2 : new fabric.Canvas('cab2', {backgroundColor: 'transparent',width : w_cab, height : h_cab,})
+
+      var cab = {
+        b1 : new fabric.Canvas('cab1', {width : w_cab, height : h_cab}),
+        b2 : new fabric.Canvas('cab2', {backgroundColor: 'transparent',width : w_cab, height : h_cab,})
     };
 
+
+
+
+ 
 //var can.h1 = new fabric.Canvas('canh',{width : w_canh, height : h_canh});
 ////******** remplissage jardin du haut
 
@@ -122,7 +124,7 @@ allee(can.h1,allee_h);
 can.h1.renderAll();
   var json = JSON.stringify(can.h1);
   Shiny.onInputChange("json_h", json);
-
+//console.log(json);
 });
 
 
@@ -148,7 +150,7 @@ for (var i=0 ; i < don.length ; i++)
     var numleg2 =don[i].numleg2;
     var rang2 = don[i].nbran2;
     var parcol2 = parcol[numleg2[0]-1];
-    console.log("nomleg2 :"+nomleg2);
+   // console.log("nomleg2 :"+nomleg2);
 //   console.log("g2 :"+gauche+"h :"+ haut+"l  :"+largeur+"h :"+hauteur+"nom :"+nom+      //"numleg :"+numleg2+" rang :"+rang2);
   if (numleg2 != 1)
   {
@@ -211,6 +213,8 @@ allee(cam.m1,allee_m);
 cam.m1.renderAll();
  var json = JSON.stringify(cam.m1);
  Shiny.onInputChange("json_m", json);
+
+
 
 });
 
@@ -353,17 +357,19 @@ allee(cab.b2,allee_b);
 cab.b2.renderAll();
 });
 
-//////////////
+
+
+//////////////fin remplissage des canvas
 
 function allee(jardin,datal) {  
- // var colal ='#EED5D2'
+  var colal ='#abf3b4'
 for (var i=0 ; i < datal.length ; i++)
 {  
 var a=datal[i].a;
 var b=datal[i].b;
 var c=datal[i].c;
 var d=datal[i].d;
-var colal=datal[i].col;
+//var colal=datal[i].col;
 
 jardin.add(new fabric.Line([a*caro, b*caro,c*caro, d*caro ],
           {
@@ -380,17 +386,17 @@ jardin.add(new fabric.Line([a*caro, b*caro,c*caro, d*caro ],
 ///////////selection
 
 can.h1.on('mouse:down',function(){
-
-  
+ 
 Shiny.onInputChange("change","GO");
 setTimeout(function(){Shiny.onInputChange("change","stop")}, 50); 
 var objact = can.h1.getActiveObject();
 
 if ( objact) { 
+    console.log(objact);
     nomparid = objact._objects[1].text;
     Shiny.onInputChange("OK_h","OK");
-    Shiny.onInputChange("OK_m","NO");
-    Shiny.onInputChange("OK_b","NO");
+     Shiny.onInputChange("OK_m","NO");
+     Shiny.onInputChange("OK_b","NO");
 }else{
   
   nomparid = null;
@@ -486,6 +492,9 @@ document.getElementById("rec_b").onclick = function()
      jarec(cab.b1);
 };
 
+
+
+
 ////////// lert sur enregistrement
  var jarec =  function (jardin) {
      
@@ -511,7 +520,7 @@ document.getElementById("rec_b").onclick = function()
     
     //////// nouvelle parcelle faire le test même parcelle sur tableau js
      var id_nouvelle_parcelle = prompt("Nom de la parcelle");
-     Shiny.onInputChange("newname", id_nouvelle_parcelle);
+     //Shiny.onInputChange("newname", id_nouvelle_parcelle);
      Shiny.onInputChange("parnew", "stop");
 
      /////////test nouveau nom de parcelle existant
@@ -520,8 +529,10 @@ document.getElementById("rec_b").onclick = function()
         for(var k=0;k<partab.length;k++)
         {
           if(id_nouvelle_parcelle == partab[k]) {same =true }
+          
         }
         // console.log("same :"+same);
+     
      
       if (jardin == can.h1) {Shiny.onInputChange("parsel_h",id_nouvelle_parcelle );} 
       if (jardin == cam.m1) {Shiny.onInputChange("parsel_m",id_nouvelle_parcelle );}                           
@@ -548,7 +559,7 @@ document.getElementById("rec_b").onclick = function()
      
 	});
    /////// modif des donnees seulement
-	var modifold = new LertButton('Autres infos', function() {
+	var modifold = new LertButton('Infos', function() {
 
   Shiny.onInputChange("parnew", "GO");
   modifad(jardin);
@@ -579,7 +590,7 @@ document.getElementById("rec_b").onclick = function()
 	jarecLert.display();
 
 }
-////////// modifs après création de parcelle
+////////// nom nouvelle parcelle
  var jarecnew =  function (jardin) {
           
       if (jardin == can.h1) {              
@@ -601,26 +612,28 @@ document.getElementById("rec_b").onclick = function()
     
     //////// nouvelle parcelle faire le test même parcelle sur tableau js
      var id_nouvelle_parcelle = prompt("Nom de la parcelle");
-     Shiny.onInputChange("newname", id_nouvelle_parcelle);
+    // Shiny.onInputChange("newname", id_nouvelle_parcelle);
      Shiny.onInputChange("parnew", "stop");
 
      /////////test nouveau nom de parcelle existant
          nomparid = id_nouvelle_parcelle;
-        
-        if(nomparid==null)
+         
+         if(nomparid==null)
          {
          var delob=jardin.getActiveObject();
          jardin.remove(delob);
          return;
          }
          
-         
-         
          var same = false;
+         if(partab)
+         {
         for(var k=0;k<partab.length;k++)
         {
           if(id_nouvelle_parcelle == partab[k]) {same =true }
+          
         }
+         }
         // console.log("same :"+same);
      
 
@@ -631,20 +644,25 @@ document.getElementById("rec_b").onclick = function()
            return;
            
        } else {
-         
+       
+       
       if (jardin == can.h1) {Shiny.onInputChange("parsel_h",id_nouvelle_parcelle );} 
       if (jardin == cam.m1) {Shiny.onInputChange("parsel_m",id_nouvelle_parcelle );}                           
       if (jardin == cab.b1) {Shiny.onInputChange("parsel_b",id_nouvelle_parcelle );}
          
         Shiny.onInputChange("parnew", "GO");
         setTimeout(function(){ Shiny.onInputChange("parnew", "stop"); },500);  
-         modifad(jardin);
+         modifad(canvas=jardin);
         partab.push(id_nouvelle_parcelle);
+        //console.log("partab apres push"+partab);
         
         var json = JSON.stringify(jardin);
+        
         if (jardin == can.h1) {Shiny.onInputChange("json_h", json);} 
         if (jardin == cam.m1) {Shiny.onInputChange("json_m", json);}
         if (jardin == cab.b1) {Shiny.onInputChange("json_b", json);}
+        
+        
    
        }  
        
@@ -897,7 +915,7 @@ parid = eval(tablid);
 //console.log("parid :"+ parid);
 //console.log("rang1 :" + parid[0]+"rang2 :"+parid[1]+" nbumleg1 :"+parid[2]+"leg2 //:"+ parid[3]);
 });
-console.log("parid :"+ parid);
+//console.log("parid :"+ parid);
 
 ////
 
@@ -906,17 +924,21 @@ function modifad (canvas,par_l,par_t,par_w,par_h,par_nom,numleg,rang, select,col
    
   //var jardin = can.h1
    var echelle = 0.8;
-   var obj = canvas.getActiveObject();
-  //console.log(obj); 
+    var obj = canvas.getActiveObject();
+   
+    console.log(obj);
     if (col_parcelle && rang==0) {col_parcelle=col_parcelle;}else{col_parcelle ="#f4efe9";}       
-    if (nomleg) {nomleg_par=nomleg+"Per2";}else{ nomleg_par="";}
-      
+    if (nomleg) {nomleg_par=nomleg+"Per2";}else{ nomleg_par="";}      
     
    if(obj)
    {
-    console.log(obj.originalLeft); 
    var par_l = obj.left;
-    if(par_l<0) {par_l=obj.originalLeft}
+  // console.log("parleft :"+par_l);
+   //var essai = obj.get('left');
+   //console.log("essai :"+essai);
+    if(par_l<0) {par_l=obj.originalLeft;
+   //console.log("origLeft :"+obj.originalLeft);    
+                }
    var par_t =  obj.top;
     if(par_t<0) {par_t = obj.originalTop}
    var par_w = obj.currentWidth;
@@ -933,12 +955,11 @@ function modifad (canvas,par_l,par_t,par_w,par_h,par_nom,numleg,rang, select,col
     width:par_w ,
     height:par_h ,
     padding: 0,
-    centeredScaling: false
-    
+    centeredScaling: false    
   });
   
   parect.set('fill', col_parcelle);
-  
+  parect.setShadow("5px 5px 2px rgba(94, 128, 191, 0.5)");
   parect.set({ strokeWidth: 3, stroke: '#c4dcf3'});
   
   var partext = new fabric.Text( par_nom,
@@ -1038,6 +1059,7 @@ groupir.set('borderColor', 'red');
 groupir.set('cornerColor','red');
 groupir.set('cornerSize',12);
 groupir.set('hoverCursor','pointer');
+//groupir.setShadow("10px 10px 5px rgba(94, 128, 191, 0.5)");
 //groupir.set('hoverCursor','all-scroll');
 
 var pardim =[par_l,par_t,par_w,par_h]
@@ -1045,7 +1067,7 @@ var pardim =[par_l,par_t,par_w,par_h]
 canvas.add(groupir);
 canvas.remove(obj);
 canvas.renderAll();
-selstop="GO";
+//selstop="GO";
   
 }
 ////////// fonction arbre fruitiers non selectable
@@ -1129,13 +1151,15 @@ function addnum(jardin,w,h) {
 
 for (var i = 0; i < (w / grid); i++) {
   
-jardin.add(new fabric.Text(i+1+"",{left:grid*(i+0.5),top:0,fontSize:10,fill:'blue'}));
+jardin.add(new fabric.Text(i+1+"",{left:grid*(i+0.8),top:0,fontSize:10,fill:'blue',
+selectable:false}));
 
 
 }
 for (var i = 0; i < (h / grid); i++) {   
 
-jardin.add(new fabric.Text((i+1).toString(),{left:5,top:grid*(i+0.5),fontSize:10,fill:'blue'}));
+jardin.add(new fabric.Text((i+1).toString(),{left:5,top:grid*(i+0.7),fontSize:10,fill:'blue',
+selectable:false}));
 
 } 
   
@@ -1211,22 +1235,24 @@ function ungrid(jardin) {
 
  ///////////////creer le rectangle de la parcelle (bouton creer)
  function rectad(jardin){
- var canDraw = true;
- var rec=true;
-    // console.log("Button ajout clicked");
+
                jardin.isDrawingMode=false;
                 //Declaring the variables
+                var canDraw = true;
+                var rec=true;
                 var isMouseDown=false;
                 var OriginX=new Array();
-                var OriginY= new Array();
+                var OriginY= new Array();               
                 var refRect;
                 var ram1=jardin._offset.left;
-                var ram2=jardin._offset.top;    
-                var recup = new Array();
-                var i=0;
+                var ram2=jardin._offset.top;  
                 
-               if( canDraw && ram1>10) { 
+               // var ram1=495.2812805175781;
+                //var ram2=259.74307175292967;
+              // console.log("ram1 ="+ram1); 
+               //console.log("ram2 ="+ram2); 
                 
+                if( canDraw && ram1>10) {               
                 //Setting the mouse events
                 jardin.on('mouse:down',function(event){
                     //Defining the procedure
@@ -1241,7 +1267,7 @@ function ungrid(jardin) {
                        
                     OriginX.push(posX-ram1);
                     OriginY.push(posY-ram2);
-              
+                  // console.log("originX :"+ OriginX);
                     
                     //Creating the rectangle object
                     var rect=new fabric.Rect({
@@ -1251,15 +1277,14 @@ function ungrid(jardin) {
                         borderColor:"red",
                         fill:'lightgreen'
                     });
-                     
-                    
+                                         
                     jardin.add(rect);
                    rect.lockRotation=true;
-                    refRect = rect;  //**Reference of rectangle object
-                
+                   refRect = rect;  //**Reference of rectangle object
+                  // console.log(rect);
                 });
                 }
-
+   
                 jardin.on('mouse:move', function(event){
                     // Defining the procedure
                   if(refRect) {
@@ -1268,29 +1293,33 @@ function ungrid(jardin) {
                                    
                         var posX=event.e.pageX-ram1;
                         var posY=event.e.pageY-ram2;
-                         
+                                              
                         refRect.setWidth(Math.abs((posX-refRect.get('left'))));
-                        refRect.setHeight(Math.abs((posY-refRect.get('top'))));
-                        
-                         
+                        refRect.setHeight(Math.abs((posY-refRect.get('top'))));                                                 
+
                        refRect.setCoords();
-                       
+                       // console.log(refRect);
                        jardin.setActiveObject(refRect);
-                       jardin.renderAll();
-                                         
+                       refRect.active=true;
+                       jardin.renderAll(); 
+                         
                      }} 
                      
 
    });               
                
                 jardin.on('mouse:up',function(){ 
+                 // jardin.calcOffset(); 
                 canDraw = false; 
-                if(rec == true) {
-                 jarecnew(jardin);
+                
+                if(rec && refRect ) {
+                 jarecnew(jardin);                       
                   rec = false;
-         setTimeout(function(){ jardin.deactivateAll().renderAll(); },500);   
-                            }
-               
+          //setTimeout(function(){ jardin.deactivateAll().renderAll(); },500);   
+               jardin.deactivateAll().renderAll();                           
+                }
+                
+                
                 });
 
  }
@@ -1322,6 +1351,6 @@ jardin.on('object:moving', function (e) {
  limit(cab.b1);
 ////////////
  
-});
+}); 
 
 });

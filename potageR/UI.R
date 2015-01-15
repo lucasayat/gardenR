@@ -13,8 +13,7 @@ library("png")
 ##########
 shinyUI(navbarPage(
   
-  h2("Garden",  tags$img(src="Rlogo.png", width="40px",height="40px")),              
-  
+   h2( "Garden",  tags$img(src="Rlogo.png", width="40px",height="40px")),              
   tabPanel(h4("Home"),
            
            headerPanel("",                
@@ -23,15 +22,7 @@ shinyUI(navbarPage(
                  tags$script(type="text/javascript", src = "filop/fabric.min.js"),
                  tags$script(type="text/javascript", src = "filop/lert.js"),
                  tags$link(rel="stylesheet", type="text/css",href="css/style.css"),
-                 tags$link(rel="stylesheet", type="text/css",href="css/lert.css")
-                 
-#                  includeScript("www/filop/newfabric.js"),
-#                 # includeScript("filop/adelar.js"),
-#                  #includeScript("filop/supev.js"),
-#                  includeScript("www/filop/fabric.min.js"),
-#                  includeScript("www/filop/lert.js"), 
-#                  includeCSS("www/css/style.css"),
-#                  includeCSS("www/css/lert.css")                                
+                 tags$link(rel="stylesheet", type="text/css",href="css/lert.css")                               
                  
      )),
 
@@ -42,6 +33,9 @@ shinyUI(navbarPage(
              
       ),
       column(6,
+             
+             #uiOutput("wait"),
+             
              h2("Organiseur de jardin potager :"),        
              h4("Structures:"),
             h6("A la première utilisation, utiliser ",a(href="https://lucasayat.shinyapps.io/jardinor/","JARDINOR en cliquant ici"), 
@@ -60,7 +54,7 @@ shinyUI(navbarPage(
              h6("Aucune donnée n'est persistante.
        Aussi, avant de quitter l'application,", downloadButton("fichactu","Sauvegarder"),"le projet dans un fichier,
        pour pouvoir le", span("reprendre",style="color:blue;"), "plus tard.",br(),br(),
-                fileInput('jarold', "",accept='.RDS'))                                    
+                fileInput('jarold', "",accept='.RDS'))
       ))),   
     
   tabPanel(h4("Jardins"),
@@ -300,6 +294,8 @@ shinyUI(navbarPage(
              column(5,
                     h4("Liste des legumes"),       
                     dataTableOutput("tableg")),
+#                     conditionalPanel("$('#dtableg').hasClass('recalculating')", 
+#                                      tags$div('Loading ... '))),
              column(7,
                     h4("Liste des parcelles"),     
                     dataTableOutput("tabparcel"))))

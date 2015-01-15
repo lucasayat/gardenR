@@ -122,8 +122,11 @@ careleg<- function (colegi,linegi,colege,linege,
 ###############calendrier legume
 editleg<-function(a){
   #  a<-list("a","b","c")
-  
+  if(length(a)>0)
+  {
+
   text<-rep("",length(a))
+  
   for (l in 1:length(a))
   {
     for (k in 1:length(a[[l]]))
@@ -131,6 +134,8 @@ editleg<-function(a){
       text[l]<-ifelse (k==1,text[l]<-a[[l]][k],
       text[l]<-paste(text[[l]],a[[l]][k],sep="-")) 
     }  
+  }}else{
+    text<-""
   }
   return(text)
 }
