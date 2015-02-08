@@ -22,7 +22,7 @@ shinyServer(function(input, output, clientData, session) {
   
   #########
 
-  don<-readRDS("data/jardini")
+  don<-readRDS("data/jardon.rds")
   options(stringsAsFactors = FALSE)
   param <- read.csv("data/param.csv")
   ##### 

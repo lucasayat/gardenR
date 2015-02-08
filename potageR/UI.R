@@ -118,7 +118,7 @@ shinyUI(navbarPage(
                              
                              wellPanel(         
                                h2("Période 1"),
-                               h5(numericInput("rang1","",value=0),"rangs de :"),
+                               h5(numericInput("rang1","",value=0,min=0),"rangs de :"),
                                checkboxGroupInput("legum1","",choices=read.csv("data/param.csv",stringsAsFactors =FALSE)$list
                                                   ,selected=read.csv("data/param.csv",stringsAsFactors =FALSE)$list[1]),
                                
@@ -133,7 +133,7 @@ shinyUI(navbarPage(
                              
                              wellPanel(
                                h2("Période 2"),
-                               h5(numericInput("rang2","",value=0)," rangs de :"),
+                               h5(numericInput("rang2","",value=0,min=0)," rangs de :"),
                                checkboxGroupInput("legum2","",choices=read.csv("data/param.csv",stringsAsFactors =FALSE)$list,
                                                   selected=read.csv("data/param.csv",stringsAsFactors =FALSE)$list[1]),
                                

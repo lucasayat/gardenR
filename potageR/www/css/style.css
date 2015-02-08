@@ -32,7 +32,7 @@ div.busy {
   right: 100px;
   height: 20px;
   width: 500px;
-  background-color:yellow;
+  background-color:transparent;
   margin: 0px;
   padding: 2px 3px;
   opacity: 0.9;
@@ -42,13 +42,15 @@ div.busy {
 .shiny-progress .progress-text .progress-message {
   padding: 0px 3px;
   font-weight: bold;
-  color:red;
+  color:blue;
   font-size: 150%;
+ box-shadow:16px 16px 16px gray;
 }
 .shiny-progress .progress-text .progress-detail {
   padding: 0px 3px;
   font-size: 100%;
-  color:red;
+  color:blue;
+  box-shadow:16px 16px 16px gray;
 }
 
 .shiny-progress .progress {
