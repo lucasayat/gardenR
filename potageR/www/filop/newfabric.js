@@ -497,9 +497,6 @@ document.getElementById("rec_b").onclick = function()
 
 ////////// lert sur enregistrement
  var jarec =  function (jardin) {
-       var veriselect=jardin.getActiveObject();
-     // console.log("active"+jardin.getActiveObject());
-      if(veriselect == null) {alert("il faut selectionner la parcelle");return;}
      
       if (jardin == can.h1) {              
                                     Shiny.onInputChange("OK_h","OK");
@@ -517,7 +514,7 @@ document.getElementById("rec_b").onclick = function()
                            Shiny.onInputChange("OK_m","NO");
                            Shiny.onInputChange("OK_b","OK");
                            } 
-           if(parid[0]< 1){alert("0 rang pour cette parcelle ??");return;};
+           if(parid[0]< 1){alert("0 rang pour cette parcelle ??")};
            
    var newparcel = new LertButton('Identifiant', function() {
     
@@ -564,10 +561,9 @@ document.getElementById("rec_b").onclick = function()
    /////// modif des donnees seulement
 	var modifold = new LertButton('Infos', function() {
 
-Shiny.onInputChange("parnew", "GO");
+  Shiny.onInputChange("parnew", "GO");
   modifad(jardin);
   setTimeout(function(){ Shiny.onInputChange("parnew", "stop"); },500);
-   
    
   var json = JSON.stringify(jardin);
   if (jardin == can.h1) {Shiny.onInputChange("json_h", json);} 

@@ -157,15 +157,15 @@ editleg<-function(a){
  coul<-c("yellow","green","cyan2","orange","darkgreen","cyan3")
  gros<-1
  
-  sem<-as.Date(g$datesem)+2.1*as.numeric(format(g$datesem,format="%m"))
-  plant<-as.Date(g$dateplant)+2.1*as.numeric(format(g$dateplant,format="%m"))
-  rec<-as.Date(g$daterec)+2.1*as.numeric(format(g$daterec,format="%m"))
-  finrec<-as.Date(g$finrec)+2.1*as.numeric(format(g$finrec,format="%m"))
+  sem<-as.Date(g$datesem)
+  plant<-as.Date(g$dateplant)
+  rec<-as.Date(g$daterec)
+  finrec<-as.Date(g$finrec)
  
-  sem2<-as.Date(g$datesem2)+2.1*as.numeric(format(g$datesem2,format="%m"))
-  plant2<-as.Date(g$dateplant2)+2.1*as.numeric(format(g$dateplant2,format="%m"))
-  rec2<-as.Date(g$daterec2)+2.1*as.numeric(format(g$daterec2,format="%m"))
-  finrec2<-as.Date(g$finrec2)+2.1*as.numeric(format(g$finrec2,format="%m"))
+  sem2<-as.Date(g$datesem2)
+  plant2<-as.Date(g$dateplant2)
+  rec2<-as.Date(g$daterec2)
+  finrec2<-as.Date(g$finrec2)
  
   deb<-paste0(an,"-01-01")
   fin<-paste0(an,"-12-31")
@@ -175,7 +175,7 @@ editleg<-function(a){
  
   lab<- c("janv","fev","Mars","Avr","Mai","Juin",
           "Juil","Aout","Sept","Oct","Nov","Dec")
-  dec<-0
+  dec<-10
   plot(zs-dec,y=c(0,nleg),x=c(0,12),type="p",cex=0,xaxt="n",ylab="",xlab="",axes=F)
   
  dates <- seq(as.Date(paste0("01/01/",an), format = "%d/%m/%Y"),
@@ -183,14 +183,11 @@ editleg<-function(a){
   axis.Date(3, at = seq(zs[1]-dec,zs[2]-dec,length.out=12),
             labels=lab, format= "%Y/%m/%d", las = 1,
             cex.axis=gros)
-  grid(nx=24,ny=nleg,col="plum",lwd=1,lty=1)
+  grid(nx=24,ny=nleg,col="plum")
   
-#     z<-month.day.year(date)
-   # rectif<-month.day.year(date)
-     z<-(2015-an)*365  
-     
-   rectif<-2.1*as.numeric(format(date,format="%m"))
-   date<-as.Date(date-z)+rectif
+    # z<-month.day.year(date)
+     z<-(2015-an)*365
+    date<-as.Date(date-z)
    #date<-as.POSIXlt(date)
     abline(v=date,col="red",lwd=2)
     text(date,nleg,labels="",srt=0,col="red",pos=3)

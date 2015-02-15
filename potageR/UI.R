@@ -7,13 +7,14 @@
 
 
 library("shiny")
+library("shinythemes")
 library("shinyBS")
 library("jsonlite")
 library("png")
 ##########
 shinyUI(navbarPage(
-  
-   h2( "Garden",  tags$img(src="Rlogo.png", width="40px",height="40px")),              
+  theme = shinytheme("flatly"),
+   h2( "Garden",style="color:yellow",  tags$img(src="Rlogo.png", width="40px",height="40px")),              
   tabPanel(h4("Home"),
            
            headerPanel("",                
@@ -118,7 +119,7 @@ shinyUI(navbarPage(
                              
                              wellPanel(         
                                h2("Période 1"),
-                               h5(numericInput("rang1","",value=0,min=0),"rangs de :"),
+                               h5(numericInput("rang1","Nombre de rangs",value=0)),
                                checkboxGroupInput("legum1","",choices=read.csv("data/param.csv",stringsAsFactors =FALSE)$list
                                                   ,selected=read.csv("data/param.csv",stringsAsFactors =FALSE)$list[1]),
                                
@@ -133,7 +134,7 @@ shinyUI(navbarPage(
                              
                              wellPanel(
                                h2("Période 2"),
-                               h5(numericInput("rang2","",value=0,min=0)," rangs de :"),
+                               h5(numericInput("rang2","Nombre de rangs",value=0)),
                                checkboxGroupInput("legum2","",choices=read.csv("data/param.csv",stringsAsFactors =FALSE)$list,
                                                   selected=read.csv("data/param.csv",stringsAsFactors =FALSE)$list[1]),
                                
@@ -153,12 +154,12 @@ shinyUI(navbarPage(
                       ))),
              column(9,
                     
-                    tabsetPanel(
+                    tabsetPanel(type = "pills",
                       
                       ###################
                       tabPanel(h4(textOutput("nomjard1")), 
 
-                               tabsetPanel(
+                               tabsetPanel(type = "pills",
                                  
                                  tabPanel(h5("Période 1"), 
                                 fluidRow(
@@ -201,7 +202,7 @@ shinyUI(navbarPage(
                       
                       ###############
                       tabPanel(h4(textOutput("nomjard2")), 
-                               tabsetPanel(id="jami",
+                               tabsetPanel(id="jami",type = "pills",
                                            tabPanel(h5("Période 1"), 
                                                     fluidRow(
                                                       column(2,  
@@ -236,7 +237,7 @@ shinyUI(navbarPage(
                       
                       ###############
                       tabPanel(h4(textOutput("nomjard3")), 
-                               tabsetPanel(id="jaba",
+                               tabsetPanel(id="jaba",type = "pills",
                                            tabPanel(h5("Période 1"),  
                                                     fluidRow(
                                                       column(2,    

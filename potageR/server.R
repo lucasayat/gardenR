@@ -372,7 +372,7 @@ observe({
         #legume1<-as.vector(data$legume[[selin]])
         # updateTextInput(session, "parid",label = "",value = data$parcelle[selin])
         updateCheckboxGroupInput(session, "legum1",label = "",selected = data$legume[[selin]])
-        updateNumericInput(session,"rang1",label="", value=data$nbran[selin])
+        updateNumericInput(session,"rang1",label="Nombre de rangs", value=data$nbran[selin])
         updateDateInput(session,"sem1",label="Semis",value=data$datesem[selin]) 
         updateDateInput(session,"plant1",label="Plant.", value=data$dateplant[selin]) 
         updateDateInput(session,"rec1",label="Recolte",value=data$daterec[selin])
@@ -382,7 +382,7 @@ observe({
         if (length(data$legume2[selin])>0) {   
           
           updateCheckboxGroupInput(session, "legum2",label = "",selected = data$legume2[[selin]])
-          updateNumericInput(session,"rang2",label="",value=data$nbran2[selin])
+          updateNumericInput(session,"rang2",label="Nombre de rangs",value=data$nbran2[selin])
           updateDateInput(session,"sem2",label="Semis",value=data$datesem2[selin])
           updateDateInput(session,"plant2",label="Plantation",value=data$dateplant2[selin])
           updateDateInput(session,"rec2",label="Recolte",value=data$daterec2[selin])

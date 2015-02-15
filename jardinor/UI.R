@@ -6,14 +6,15 @@
 #  You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 library("shiny")
+library("shinythemes")
 library("shinyBS")
 library("shinyTable")
 library("jsonlite")
 library("png")
 ##########
 shinyUI(navbarPage(
-         
-             h2("Garden",  tags$img(src="Rlogo.png", width="40px",height="40px")),              
+  theme = shinytheme("flatly"),
+             h2("Garden", style="color:yellow", tags$img(src="Rlogo.png", width="40px",height="40px")),              
                    
                    tabPanel(h4("Home"),
                             
@@ -65,7 +66,7 @@ shinyUI(navbarPage(
                    
                    ################
                    tabPanel(h4("Structures"),
-                            tabsetPanel(
+                            tabsetPanel(type="pills",
                               tabPanel(h4("1er jardin"),
                                       
                                        fluidRow(
