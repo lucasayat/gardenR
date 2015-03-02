@@ -123,6 +123,7 @@ extract_can <- function(tabx){
 
   parcelle<-c("")
  l<-nrow(tabx)
+ if(l==0) return(NULL)
   for( i in 1:l)
   {
     if(length(tabx$objects[[i]]$text[2])>0)

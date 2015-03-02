@@ -279,7 +279,7 @@ return(tablegume)
 
 tableg<-function(datan,an){
     
-  if(nrow(datan)==0) return(NULL)
+  if(is.null(datan) | nrow(datan)==0) return(NULL)
   tablegi<-subset(datan,select=c("parcelle","jardin","legume",
                 "legume2","width","height","nbran","nbran2"))
   tablegi$long<-as.numeric(tablegi$height)/caro

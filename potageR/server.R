@@ -37,7 +37,7 @@ shinyServer(function(input, output, clientData, session) {
   
   #########
 
-  don<-readRDS("perso/jardin2015.rds")
+  don<-readRDS("data/vivid")
   options(stringsAsFactors = FALSE)
   param <- read.csv("data/param.csv")
   ##### 
