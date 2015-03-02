@@ -122,10 +122,12 @@ var  allee_h =eval(message.al);
 allee(can.h1,allee_h);
 
 can.h1.renderAll();
-  var json = JSON.stringify(can.h1);
+
+ var json = JSON.stringify(can.h1);
   Shiny.onInputChange("json_h", json);
-//console.log(json);
+ // console.log(json);
 });
+
 
 
 ///*
@@ -461,7 +463,8 @@ Shiny.onInputChange("jardin_b","B");
 
 document.getElementById("pos").onclick = function()
 { 
-rectad(can.h1); 
+rectad(can.h1);
+
 };
           
  document.getElementById("pos_m").onclick = function()
@@ -477,9 +480,13 @@ rectad(cab.b1);
  
 //// enregistrement
 
+
 document.getElementById("rec").onclick = function() 
    {
-     jarec(can.h1);     
+     jarec(can.h1);
+     var json = JSON.stringify(can.h1);
+     Shiny.onInputChange("json_h", json);
+     console.log(json)
 };
 
 document.getElementById("rec_m").onclick = function() 

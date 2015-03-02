@@ -30,7 +30,7 @@ shinyUI(navbarPage(
     fluidRow(
       
       column(5,
-             tags$img(src="jardino.png", id="pot", width="450px",height="490px")  
+             tags$img(src="jardino.png", id="pot", width="450px",height="490px")
              
       ),
       column(6,

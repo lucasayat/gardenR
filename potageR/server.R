@@ -37,7 +37,7 @@ shinyServer(function(input, output, clientData, session) {
   
   #########
 
-  don<-readRDS("data/jardon.rds")
+  don<-readRDS("perso/jardin2015.rds")
   options(stringsAsFactors = FALSE)
   param <- read.csv("data/param.csv")
   ##### 
@@ -82,8 +82,8 @@ output$nomjard3<-renderText({
   ######## reprise du fichier tempar toute les 1 0.5s  
   
   tempar<- reactiveFileReader(500, session, "data/tempar",readRDS)
-  tabarb<- reactiveFileReader(500, session, "data/trees",readRDS)
-  tabal<- reactiveFileReader(500, session, "data/datal",readRDS)
+  #tabarb<- reactiveFileReader(500, session, "data/trees",readRDS)
+  #tabal<- reactiveFileReader(500, session, "data/datal",readRDS)
   ##########
  output$rang<-renderText({
  input$change
@@ -94,42 +94,30 @@ output$nomjard3<-renderText({
   return(veg)
 })
 ####### receuil et sauvegardes canvas  
-wh<-reactive({
+observe({
+ 
   if(!is.null(input$json_h))
   {
     rjon_h<-fromJSON(input$json_h)
-  
-    wh<-rjon_h$objects
-    wh<-subset(wh, wh$width>10 & wh$height>10)
-    #saveRDS(wh,"data/jsonessai.rds")
-    wh<-extract_can(wh)
-    return(wh)
+    saveRDS(rjon_h,"data/rjon_h")
   }
-  
 })
-
-
-wm<-reactive({
-  if(!is.null(input$json_m))
+  
+observe({ 
+if(!is.null(input$json_m))
   {
     rjon_m<-fromJSON(input$json_m)
-    wm<-rjon_m$objects
-    wm<-subset(wm, wm$width>10 & wm$height>10)
-    wm<-extract_can(wm)
-    return(wm)
+    saveRDS(rjon_m,"data/rjon_m")
   }
+
 })
 
-wb<-reactive({
-  if(!is.null(input$json_b))
+observe({ 
+if(!is.null(input$json_b))
   {
     rjon_b<-fromJSON(input$json_b)
-    wb<-rjon_b$objects
-    wb<-subset(wb, wb$width>10 & wb$height>10)
-   
-    wb<-extract_can(wb)
-    return(wb)
-  }
+    saveRDS(rjon_b,"data/rjon_b")
+  }  
 })
 
 ######### synchronisation de newdon (taille et position des parcelles) et tempar(reste)
@@ -142,7 +130,20 @@ newdon<-reactive({
   input$fichactu
   input$jarold
   
-  m<-json2Ractu(wh=wh(),wm=wm(),wb=wb()) 
+  rjon_h<-readRDS("data/rjon_h") 
+  wh<-rjon_h$objects
+  wh<-subset(wh, wh$width>10 & wh$height>10)
+  wh<-extract_can(wh) 
+  rjon_m<-readRDS("data/rjon_m") 
+  wm<-rjon_m$objects
+  wm<-subset(wm, wm$width>10 & wm$height>10)
+  wm<-extract_can(wm)
+  rjon_b<-readRDS("data/rjon_b") 
+  wb<-rjon_b$objects
+  wb<-subset(wb, wb$width>10 & wb$height>10)
+  wb<-extract_can(wb)
+  
+  m<-json2Ractu(wh=wh,wm=wm,wb=wb) 
   if(is.null(m))
   {
   m<-don[[2]]
@@ -176,10 +177,7 @@ jar<-reactive ({
 observe({
  jar()
   if(!is.null(jar()))
-    {
- 
-  
-  
+    { 
     newdon<-jar()[[2]]
     
      trees<-jar()[[3]] 
@@ -189,7 +187,7 @@ observe({
     datal<-jar()[[4]]    
     saveRDS(datal,file="data/datal")
     
-    leg14<-readRDS("data/jardin2014")
+    leg14<-readRDS("perso/jardin2014")
     
     if(length(newdon$parcelle)>0)
     {
@@ -586,6 +584,7 @@ output$tableg <-  renderDataTable({
   leg2014<-tableg(datan=leg14,an=2014) 
   
   newdon<-newdon()
+
   if(nrow(newdon)!=0)
   {
     leg2015<-tableg(datan=newdon,an=2015) 
@@ -789,7 +788,8 @@ output$fichactu <- downloadHandler(
   content = function(file) {
     
   dimjars<-data.frame( long=c(23,60,60),larg=c(21,10,15))
-   leg<-  jar()[[2]]
+  # leg<-  jar()[[2]]
+  leg<-newdon()
    trees<-readRDS("data/trees")
   
    datal<-readRDS("data/datal")
