@@ -8,19 +8,20 @@
 
 library("shiny")
 library("shinythemes")
+library(shinysky)
 library("shinyBS")
 library("jsonlite")
 library("png")
 ##########
 shinyUI(navbarPage(
-  theme = shinytheme("flatly"),
+  theme = shinytheme("united"),
    h2( "Garden",style="color:yellow",  tags$img(src="Rlogo.png", width="40px",height="40px")),              
   tabPanel(h4("Home"),
            
            headerPanel("",                
                tags$head(
                  tags$script(type="text/javascript", src = "filop/newfabric.js"),
-                 tags$script(type="text/javascript", src = "filop/fabric.min.js"),
+                 tags$script(type="text/javascript", src = "filop/fabric.min.js"), 
                  tags$script(type="text/javascript", src = "filop/lert.js"),
                  tags$link(rel="stylesheet", type="text/css",href="css/style.css"),
                  tags$link(rel="stylesheet", type="text/css",href="css/lert.css")                               
@@ -35,7 +36,8 @@ shinyUI(navbarPage(
       ),
       column(6,
              
-             #uiOutput("wait"),
+#              busyIndicator(text = "Calculation in progress..",
+#             img = "shinysky/busyIndicator/ajaxloaderq.gif", wait = 0),
              
              h2("Organiseur de jardin potager :"),        
              h4("Structures:"),
@@ -58,7 +60,7 @@ shinyUI(navbarPage(
                 fileInput('jarold', "",accept='.RDS'))
       ))),   
     
-  tabPanel(h4("Jardins"),
+  tabPanel(h4("Jardins"),            
                       
            fluidRow(
              column(3,
@@ -171,11 +173,11 @@ shinyUI(navbarPage(
                                                    
                                                    tags$input(type = "button",id = "del" ,value="Supprimer"),
                                                    
-                                                   tags$input(type = "button",id = "png" ,value="Image")     
-                                                   
+                                                   tags$input(type = "button",id = "png" ,value="Image")
+                                             
                                             ),
                                             column(10,         
-                                    
+                      
                                           
                                           tags$canvas(id="canh1",style="border:3px solid #0000ff"),
                                           
@@ -290,16 +292,15 @@ shinyUI(navbarPage(
                     uiOutput("planlegold")))),
   
   #####################
-  tabPanel(h4("Tableaux"),
-           fluidRow(
-             column(5,
-                    h4("Liste des legumes"),       
+ # tabPanel(h4("Tableaux"),
+           navbarMenu(h4("Tableaux"),
+                   tabPanel("Liste des legumes",
                     dataTableOutput("tableg")),
 #                     conditionalPanel("$('#dtableg').hasClass('recalculating')", 
 #                                      tags$div('Loading ... '))),
-             column(7,
-                    h4("Liste des parcelles"),     
-                    dataTableOutput("tabparcel"))))
+            
+               tabPanel("Liste des parcelles",     
+                    dataTableOutput("tabparcel")))
   
 ###############
             ))
